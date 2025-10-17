@@ -4,10 +4,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Calendar } from '@/components/ui/calendar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
+import { DateRange } from 'react-day-picker';
 
 const Index = () => {
   const [selectedDate, setSelectedDate] = useState<Date>();
-  const [boardingDate, setBoardingDate] = useState<Date>();
+  const [boardingDateRange, setBoardingDateRange] = useState<DateRange | undefined>();
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -196,16 +197,27 @@ const Index = () => {
                 <CardContent className="space-y-6">
                   <div className="flex justify-center">
                     <Calendar
-                      mode="single"
-                      selected={boardingDate}
-                      onSelect={setBoardingDate}
+                      mode="range"
+                      selected={boardingDateRange}
+                      onSelect={setBoardingDateRange}
                       className="rounded-md border"
                       disabled={(date) => date < new Date()}
+                      numberOfMonths={2}
                     />
                   </div>
-                  {boardingDate && (
+                  {boardingDateRange?.from && (
                     <div className="p-4 bg-accent/50 rounded-lg space-y-4">
-                      <p className="font-medium">Выбранная дата: {boardingDate.toLocaleDateString('ru-RU')}</p>
+                      <div className="space-y-2">
+                        <p className="font-medium">Дата заезда: {boardingDateRange.from.toLocaleDateString('ru-RU')}</p>
+                        {boardingDateRange.to && (
+                          <>
+                            <p className="font-medium">Дата выезда: {boardingDateRange.to.toLocaleDateString('ru-RU')}</p>
+                            <p className="text-sm text-muted-foreground">
+                              Количество дней: {Math.ceil((boardingDateRange.to.getTime() - boardingDateRange.from.getTime()) / (1000 * 60 * 60 * 24))}
+                            </p>
+                          </>
+                        )}
+                      </div>
                       <div className="space-y-2">
                         <label className="text-sm font-medium">Имя питомца</label>
                         <input type="text" className="w-full px-4 py-2 rounded-md border bg-background" placeholder="Например, Макс" />
