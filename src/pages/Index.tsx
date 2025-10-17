@@ -20,25 +20,31 @@ const Index = () => {
       title: 'Передержка',
       description: 'Комфортное пребывание вашего питомца в уютных условиях',
       icon: 'Home',
-      price: 'от 1500₽/сутки'
+      price: '1200₽/сутки'
     },
     {
-      title: 'Групповые занятия',
-      description: 'Социализация и обучение в группе с профессиональным кинологом',
-      icon: 'Users',
-      price: 'от 800₽/занятие'
+      title: 'Неполный день',
+      description: 'Присмотр за питомцем от 4-х часов',
+      icon: 'Clock',
+      price: '800₽'
     },
     {
-      title: 'Индивидуальные тренировки',
-      description: 'Персональный подход к воспитанию и дрессировке',
-      icon: 'Award',
-      price: 'от 2000₽/час'
+      title: 'Абонемент 10 дней',
+      description: 'Выгодное предложение на 10 дней передержки',
+      icon: 'Ticket',
+      price: '10 000₽'
     },
     {
-      title: 'Консультации',
-      description: 'Помощь в решении поведенческих проблем',
-      icon: 'MessageCircle',
-      price: 'от 1200₽'
+      title: 'Абонемент 21 день',
+      description: 'Максимальная выгода на 21 день передержки',
+      icon: 'TicketCheck',
+      price: '19 500₽'
+    },
+    {
+      title: 'Доставка по городу',
+      description: 'Привезем и заберем вашего питомца',
+      icon: 'Car',
+      price: 'по договоренности'
     }
   ];
 
@@ -72,7 +78,7 @@ const Index = () => {
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
             <Icon name="Dog" size={32} className="text-primary" />
-            <span className="text-xl font-bold">Бульдог Клуб</span>
+            <span className="text-xl font-bold">У Нас Лапки</span>
           </div>
           <nav className="hidden md:flex gap-6">
             <button onClick={() => scrollToSection('hero')} className="text-sm font-medium hover:text-primary transition-colors">Главная</button>
@@ -217,9 +223,9 @@ const Index = () => {
                             </p>
                             <div className="mt-3 p-3 bg-primary/10 rounded-lg border-2 border-primary/30">
                               <p className="text-lg font-bold text-primary">
-                                Стоимость: {(Math.ceil((boardingDateRange.to.getTime() - boardingDateRange.from.getTime()) / (1000 * 60 * 60 * 24)) * 1500).toLocaleString('ru-RU')}₽
+                                Стоимость: {(Math.ceil((boardingDateRange.to.getTime() - boardingDateRange.from.getTime()) / (1000 * 60 * 60 * 24)) * 1200).toLocaleString('ru-RU')}₽
                               </p>
-                              <p className="text-xs text-muted-foreground mt-1">1500₽ за сутки</p>
+                              <p className="text-xs text-muted-foreground mt-1">1200₽ за сутки</p>
                             </div>
                           </>
                         )}
