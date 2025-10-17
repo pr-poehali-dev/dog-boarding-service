@@ -215,6 +215,12 @@ const Index = () => {
                             <p className="text-sm text-muted-foreground">
                               Количество дней: {Math.ceil((boardingDateRange.to.getTime() - boardingDateRange.from.getTime()) / (1000 * 60 * 60 * 24))}
                             </p>
+                            <div className="mt-3 p-3 bg-primary/10 rounded-lg border-2 border-primary/30">
+                              <p className="text-lg font-bold text-primary">
+                                Стоимость: {(Math.ceil((boardingDateRange.to.getTime() - boardingDateRange.from.getTime()) / (1000 * 60 * 60 * 24)) * 1500).toLocaleString('ru-RU')}₽
+                              </p>
+                              <p className="text-xs text-muted-foreground mt-1">1500₽ за сутки</p>
+                            </div>
                           </>
                         )}
                       </div>
