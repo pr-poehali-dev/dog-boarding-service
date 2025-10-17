@@ -86,7 +86,6 @@ const Index = () => {
       </header>
 
       <section id="hero" className="relative py-20 md:py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/20 -z-10" />
         <div className="container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 animate-fade-in">
@@ -105,11 +104,11 @@ const Index = () => {
                 </Button>
               </div>
             </div>
-            <div className="relative animate-scale-in">
+            <div className="relative animate-scale-in flex items-center justify-center">
               <img
                 src="https://cdn.poehali.dev/files/1d81e590-9c3a-4cd5-bf29-5a014dcc8a15.png"
                 alt="У нас нас лапка"
-                className="w-full"
+                className="w-full max-w-2xl scale-125"
               />
             </div>
           </div>
