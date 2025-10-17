@@ -16,7 +16,7 @@ const ContactsSection = () => {
               <Icon name="Phone" className="text-primary" size={28} />
             </div>
             <h3 className="font-bold text-lg">Телефон</h3>
-            <p className="text-muted-foreground">+7 (999) 123-45-67</p>
+            <p className="text-muted-foreground">+7 (910) 588-48-16</p>
           </div>
           <div className="text-center space-y-3">
             <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
