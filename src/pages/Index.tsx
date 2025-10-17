@@ -105,11 +105,11 @@ const Index = () => {
                 </Button>
               </div>
             </div>
-            <div className="relative animate-scale-in">
+            <div className="relative animate-scale-in flex items-center justify-center">
               <img
-                src="https://cdn.poehali.dev/files/c48dc31f-2bc2-4c42-8736-d0db830a1195.png"
+                src="https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/files/31320dda-3aed-485b-9995-4268567f64da.jpg"
                 alt="У нас нас лапка"
-                className="w-full"
+                className="w-full max-w-xl mx-auto drop-shadow-2xl"
               />
             </div>
           </div>
