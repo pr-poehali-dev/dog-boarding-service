@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
@@ -7,8 +8,11 @@ import Icon from '@/components/ui/icon';
 import { DateRange } from 'react-day-picker';
 
 const Index = () => {
+  const { toast } = useToast();
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [boardingDateRange, setBoardingDateRange] = useState<DateRange | undefined>();
+  const [boardingForm, setBoardingForm] = useState({ petName: '', breed: '', phone: '', email: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -27,6 +31,12 @@ const Index = () => {
       description: 'Присмотр за питомцем от 4-х часов',
       icon: 'Clock',
       price: '800₽'
+    },
+    {
+      title: 'Индивидуальные занятия с кинологом',
+      description: 'Персональный подход к воспитанию и дрессировке вашего питомца',
+      icon: 'GraduationCap',
+      price: 'от 3 000₽'
     },
     {
       title: 'Абонемент 10 дней',
@@ -232,17 +242,107 @@ const Index = () => {
                       </div>
                       <div className="space-y-2">
                         <label className="text-sm font-medium">Имя питомца</label>
-                        <input type="text" className="w-full px-4 py-2 rounded-md border bg-background" placeholder="Например, Макс" />
+                        <input 
+                          type="text" 
+                          className="w-full px-4 py-2 rounded-md border bg-background" 
+                          placeholder="Например, Макс" 
+                          value={boardingForm.petName}
+                          onChange={(e) => setBoardingForm({...boardingForm, petName: e.target.value})}
+                        />
                       </div>
                       <div className="space-y-2">
                         <label className="text-sm font-medium">Порода</label>
-                        <input type="text" className="w-full px-4 py-2 rounded-md border bg-background" placeholder="Например, Английский бульдог" />
+                        <input 
+                          type="text" 
+                          className="w-full px-4 py-2 rounded-md border bg-background" 
+                          placeholder="Например, Английский бульдог" 
+                          value={boardingForm.breed}
+                          onChange={(e) => setBoardingForm({...boardingForm, breed: e.target.value})}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Ваше имя</label>
+                        <input 
+                          type="text" 
+                          className="w-full px-4 py-2 rounded-md border bg-background" 
+                          placeholder="Как к вам обращаться?" 
+                          value={boardingForm.email.split('@')[0]}
+                          onChange={(e) => setBoardingForm({...boardingForm, email: e.target.value})}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Email для подтверждения</label>
+                        <input 
+                          type="email" 
+                          className="w-full px-4 py-2 rounded-md border bg-background" 
+                          placeholder="example@mail.ru" 
+                          value={boardingForm.email}
+                          onChange={(e) => setBoardingForm({...boardingForm, email: e.target.value})}
+                        />
                       </div>
                       <div className="space-y-2">
                         <label className="text-sm font-medium">Ваш телефон</label>
-                        <input type="tel" className="w-full px-4 py-2 rounded-md border bg-background" placeholder="+7 (999) 123-45-67" />
+                        <input 
+                          type="tel" 
+                          className="w-full px-4 py-2 rounded-md border bg-background" 
+                          placeholder="+7 (999) 123-45-67" 
+                          value={boardingForm.phone}
+                          onChange={(e) => setBoardingForm({...boardingForm, phone: e.target.value})}
+                        />
                       </div>
-                      <Button className="w-full" size="lg">Забронировать</Button>
+                      <Button 
+                        className="w-full" 
+                        size="lg"
+                        disabled={isSubmitting || !boardingForm.petName || !boardingForm.phone || !boardingForm.email}
+                        onClick={async () => {
+                          if (!boardingDateRange?.from || !boardingDateRange?.to) return;
+                          
+                          setIsSubmitting(true);
+                          try {
+                            const days = Math.ceil((boardingDateRange.to.getTime() - boardingDateRange.from.getTime()) / (1000 * 60 * 60 * 24));
+                            const cost = days * 1200;
+                            
+                            const response = await fetch('https://functions.poehali.dev/0bcd3ec4-db86-4122-b15e-89d6a9dd9932', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({
+                                name: boardingForm.email.split('@')[0] || 'Клиент',
+                                email: boardingForm.email,
+                                phone: boardingForm.phone,
+                                petName: boardingForm.petName,
+                                startDate: boardingDateRange.from.toLocaleDateString('ru-RU'),
+                                endDate: boardingDateRange.to.toLocaleDateString('ru-RU'),
+                                cost: cost.toString()
+                              })
+                            });
+                            
+                            if (response.ok) {
+                              toast({
+                                title: '✅ Бронирование принято!',
+                                description: 'Мы отправили подтверждение на вашу почту и свяжемся с вами в ближайшее время.',
+                              });
+                              setBoardingForm({ petName: '', breed: '', phone: '', email: '' });
+                              setBoardingDateRange(undefined);
+                            } else {
+                              toast({
+                                title: '⚠️ Не удалось отправить',
+                                description: 'Пожалуйста, позвоните нам напрямую или попробуйте позже.',
+                                variant: 'destructive'
+                              });
+                            }
+                          } catch (error) {
+                            toast({
+                              title: '⚠️ Ошибка подключения',
+                              description: 'Проверьте интернет-соединение и попробуйте снова.',
+                              variant: 'destructive'
+                            });
+                          } finally {
+                            setIsSubmitting(false);
+                          }
+                        }}
+                      >
+                        {isSubmitting ? 'Отправка...' : 'Забронировать'}
+                      </Button>
                     </div>
                   )}
                 </CardContent>

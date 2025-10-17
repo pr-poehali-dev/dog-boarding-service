@@ -1,0 +1,29 @@
+{
+  "tests": [
+    {
+      "name": "Test booking email send",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "name": "Иван Петров",
+        "email": "test@example.com",
+        "phone": "+7 999 123-45-67",
+        "petName": "Макс",
+        "startDate": "2025-10-20",
+        "endDate": "2025-10-25",
+        "cost": "6000"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Test OPTIONS request",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    }
+  ]
+}
