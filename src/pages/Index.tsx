@@ -97,7 +97,7 @@ const Index = () => {
           <div className="text-center space-y-8 animate-fade-in">
             <div className="flex justify-center mb-8">
               <img
-                src="https://cdn.poehali.dev/files/3edf6327-2a7d-4237-8bfb-41ce77d7b7a7.png"
+                src="https://cdn.poehali.dev/files/7d114a4f-545b-4114-a2ba-28bc4d7d2770.png"
                 alt="У Нас Лапки - Кинологический клуб"
                 className="w-full max-w-2xl md:max-w-3xl"
               />
