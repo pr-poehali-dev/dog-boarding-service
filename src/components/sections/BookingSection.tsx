@@ -10,54 +10,35 @@ const BookingSection = () => {
   const { toast } = useToast();
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [boardingDateRange, setBoardingDateRange] = useState<DateRange | undefined>();
-  const [boardingForm, setBoardingForm] = useState({ petName: '', breed: '', phone: '', email: '' });
+  const [boardingForm, setBoardingForm] = useState({ petName: '', breed: '', phone: '', name: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleBookingSubmit = async () => {
+  const handleBookingSubmit = () => {
     if (!boardingDateRange?.from || !boardingDateRange?.to) return;
     
-    setIsSubmitting(true);
-    try {
-      const days = Math.ceil((boardingDateRange.to.getTime() - boardingDateRange.from.getTime()) / (1000 * 60 * 60 * 24));
-      const cost = days * 1200;
-      
-      const response = await fetch('https://functions.poehali.dev/0bcd3ec4-db86-4122-b15e-89d6a9dd9932', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: boardingForm.email.split('@')[0] || 'Клиент',
-          email: boardingForm.email,
-          phone: boardingForm.phone,
-          petName: boardingForm.petName,
-          startDate: boardingDateRange.from.toLocaleDateString('ru-RU'),
-          endDate: boardingDateRange.to.toLocaleDateString('ru-RU'),
-          cost: cost.toString()
-        })
-      });
-      
-      if (response.ok) {
-        toast({
-          title: '✅ Бронирование принято!',
-          description: 'Мы отправили подтверждение на вашу почту и свяжемся с вами в ближайшее время.',
-        });
-        setBoardingForm({ petName: '', breed: '', phone: '', email: '' });
-        setBoardingDateRange(undefined);
-      } else {
-        toast({
-          title: '⚠️ Не удалось отправить',
-          description: 'Пожалуйста, позвоните нам напрямую или попробуйте позже.',
-          variant: 'destructive'
-        });
-      }
-    } catch (error) {
-      toast({
-        title: '⚠️ Ошибка подключения',
-        description: 'Проверьте интернет-соединение и попробуйте снова.',
-        variant: 'destructive'
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    const days = Math.ceil((boardingDateRange.to.getTime() - boardingDateRange.from.getTime()) / (1000 * 60 * 60 * 24));
+    const cost = days * 1200;
+    
+    const whatsappNumber = '79991234567';
+    const message = `🐾 *Новое бронирование!*
+
+👤 Клиент: ${boardingForm.name}
+📞 Телефон: ${boardingForm.phone}
+🐶 Питомец: ${boardingForm.petName} (${boardingForm.breed})
+📅 Даты: ${boardingDateRange.from.toLocaleDateString('ru-RU')} - ${boardingDateRange.to.toLocaleDateString('ru-RU')}
+📆 Количество дней: ${days}
+💰 Стоимость: ${cost.toLocaleString('ru-RU')}₽`;
+    
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+    
+    toast({
+      title: '✅ Открываем WhatsApp!',
+      description: 'Отправьте сообщение для подтверждения бронирования.',
+    });
+    
+    setBoardingForm({ petName: '', breed: '', phone: '', name: '' });
+    setBoardingDateRange(undefined);
   };
 
   return (
@@ -136,18 +117,8 @@ const BookingSection = () => {
                         type="text" 
                         className="w-full px-4 py-2 rounded-md border bg-background" 
                         placeholder="Как к вам обращаться?" 
-                        value={boardingForm.email.split('@')[0]}
-                        onChange={(e) => setBoardingForm({...boardingForm, email: e.target.value})}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Email для подтверждения</label>
-                      <input 
-                        type="email" 
-                        className="w-full px-4 py-2 rounded-md border bg-background" 
-                        placeholder="example@mail.ru" 
-                        value={boardingForm.email}
-                        onChange={(e) => setBoardingForm({...boardingForm, email: e.target.value})}
+                        value={boardingForm.name}
+                        onChange={(e) => setBoardingForm({...boardingForm, name: e.target.value})}
                       />
                     </div>
                     <div className="space-y-2">
@@ -163,10 +134,10 @@ const BookingSection = () => {
                     <Button 
                       className="w-full" 
                       size="lg"
-                      disabled={isSubmitting || !boardingForm.petName || !boardingForm.phone || !boardingForm.email}
+                      disabled={!boardingForm.petName || !boardingForm.phone || !boardingForm.name}
                       onClick={handleBookingSubmit}
                     >
-                      {isSubmitting ? 'Отправка...' : 'Забронировать'}
+                      Отправить в WhatsApp
                     </Button>
                   </div>
                 )}
