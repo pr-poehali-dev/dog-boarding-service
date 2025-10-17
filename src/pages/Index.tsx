@@ -85,31 +85,29 @@ const Index = () => {
         </div>
       </header>
 
-      <section id="hero" className="relative py-20 md:py-32 overflow-hidden">
+      <section id="hero" className="relative py-16 md:py-24 overflow-hidden">
         <div className="container">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6 animate-fade-in">
-              <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-                Профессиональная забота о вашем питомце
-              </h1>
-              <p className="text-lg md:text-xl text-muted-foreground">
-                Кинологические услуги с любовью к бульдогам. Передержка, групповые занятия и индивидуальные тренировки.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Button size="lg" onClick={() => scrollToSection('booking')}>
-                  Забронировать место
-                </Button>
-                <Button size="lg" variant="outline" onClick={() => scrollToSection('services')}>
-                  Наши услуги
-                </Button>
-              </div>
-            </div>
-            <div className="relative animate-scale-in flex items-center justify-center">
+          <div className="text-center space-y-8 animate-fade-in">
+            <div className="flex justify-center mb-8">
               <img
                 src="https://cdn.poehali.dev/files/b22d8f99-c99e-4993-83f8-5ee5bd1ff66a.png"
                 alt="У нас нас лапка"
-                className="w-full max-w-2xl scale-125"
+                className="w-full max-w-xl md:max-w-2xl"
               />
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold leading-tight max-w-4xl mx-auto">
+              Профессиональная забота о вашем питомце
+            </h1>
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+              Кинологические услуги с любовью к бульдогам. Передержка, групповые занятия и индивидуальные тренировки.
+            </p>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <Button size="lg" onClick={() => scrollToSection('booking')}>
+                Забронировать место
+              </Button>
+              <Button size="lg" variant="outline" onClick={() => scrollToSection('services')}>
+                Наши услуги
+              </Button>
             </div>
           </div>
         </div>
