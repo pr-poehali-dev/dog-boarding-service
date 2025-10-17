@@ -42,9 +42,9 @@ const Index = () => {
   ];
 
   const gallery = [
-    { url: 'https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/files/fffaa0f2-4767-408c-b8c7-e98b808a9ab0.jpg', name: 'Макс' },
-    { url: 'https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/files/939f4313-13e3-4e53-8b64-325104aa89b2.jpg', name: 'Групповое занятие' },
-    { url: 'https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/files/740754de-aaae-4330-a292-dd37cd19e1c4.jpg', name: 'Тренировка' }
+    { url: 'https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/files/8ba251f4-713a-4df8-b0e5-95adfa989f67.jpg', name: 'Макс' },
+    { url: 'https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/files/2a1e9638-3a15-42e7-bbcd-273ce3cc044e.jpg', name: 'Групповое занятие' },
+    { url: 'https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/files/77a58d04-c426-4ba2-8457-f7bf40fe0aad.jpg', name: 'Комфортные условия' }
   ];
 
   const reviews = [
@@ -85,7 +85,7 @@ const Index = () => {
         </div>
       </header>
 
-      <section id="hero" className="relative py-16 md:py-24 overflow-hidden">
+      <section id="hero" className="relative py-16 md:py-24 overflow-hidden bg-gradient-to-b from-accent/30 to-background">
         <div className="container">
           <div className="text-center space-y-8 animate-fade-in">
             <div className="flex justify-center mb-8">
@@ -108,6 +108,40 @@ const Index = () => {
               <Button size="lg" variant="outline" onClick={() => scrollToSection('services')}>
                 Наши услуги
               </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-background">
+        <div className="container">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Почему выбирают нас</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Мы создаем лучшие условия для вашего питомца
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div className="text-center space-y-3">
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                <Icon name="Heart" className="text-primary" size={32} />
+              </div>
+              <h3 className="text-xl font-bold">Любовь к породе</h3>
+              <p className="text-muted-foreground">Специализируемся на бульдогах и знаем все особенности породы</p>
+            </div>
+            <div className="text-center space-y-3">
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                <Icon name="Shield" className="text-primary" size={32} />
+              </div>
+              <h3 className="text-xl font-bold">Безопасность</h3>
+              <p className="text-muted-foreground">Круглосуточное видеонаблюдение и постоянный контроль состояния питомцев</p>
+            </div>
+            <div className="text-center space-y-3">
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                <Icon name="Star" className="text-primary" size={32} />
+              </div>
+              <h3 className="text-xl font-bold">Опыт 10+ лет</h3>
+              <p className="text-muted-foreground">Профессиональные кинологи с большим опытом работы</p>
             </div>
           </div>
         </div>
