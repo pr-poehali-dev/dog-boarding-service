@@ -99,7 +99,7 @@ const Index = () => {
               <img
                 src="https://cdn.poehali.dev/files/7d114a4f-545b-4114-a2ba-28bc4d7d2770.png"
                 alt="У Нас Лапки - Кинологический клуб"
-                className="w-full max-w-2xl md:max-w-3xl"
+                className="w-full max-w-2xl md:max-w-3xl animate-warm-bounce-in"
               />
             </div>
             <h1 className="text-4xl md:text-6xl font-bold leading-tight max-w-4xl mx-auto">
