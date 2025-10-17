@@ -107,7 +107,7 @@ const Index = () => {
             </div>
             <div className="relative animate-scale-in">
               <img
-                src="https://cdn.poehali.dev/files/c48dc31f-2bc2-4c42-8736-d0db830a1195.png"
+                src="https://cdn.poehali.dev/files/1d81e590-9c3a-4cd5-bf29-5a014dcc8a15.png"
                 alt="У нас нас лапка"
                 className="w-full"
               />
