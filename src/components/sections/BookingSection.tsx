@@ -19,7 +19,7 @@ const BookingSection = () => {
     const days = Math.ceil((boardingDateRange.to.getTime() - boardingDateRange.from.getTime()) / (1000 * 60 * 60 * 24));
     const cost = days * 1200;
     
-    const whatsappNumber = '79991234567';
+    const whatsappNumber = '79105884816';
     const message = `🐾 *Новое бронирование!*
 
 👤 Клиент: ${boardingForm.name}
