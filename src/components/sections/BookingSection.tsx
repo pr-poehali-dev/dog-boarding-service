@@ -51,9 +51,10 @@ const BookingSection = () => {
           </p>
         </div>
         <Tabs defaultValue="boarding" className="max-w-4xl mx-auto">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="boarding">Передержка</TabsTrigger>
-            <TabsTrigger value="training">Групповые занятия</TabsTrigger>
+            <TabsTrigger value="training">Дневная группа</TabsTrigger>
+            <TabsTrigger value="kinologist">Услуги кинолога</TabsTrigger>
           </TabsList>
           <TabsContent value="boarding" className="space-y-6">
             <Card>
@@ -147,7 +148,7 @@ const BookingSection = () => {
           <TabsContent value="training" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Записаться на групповое занятие</CardTitle>
+                <CardTitle>Записаться в дневную группу</CardTitle>
                 <CardDescription>Выберите удобную дату для занятия</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -184,7 +185,91 @@ const BookingSection = () => {
                       <label className="text-sm font-medium">Ваш телефон</label>
                       <input type="tel" className="w-full px-4 py-2 rounded-md border bg-background" placeholder="+7 (999) 123-45-67" />
                     </div>
+                    <div className="mt-3 p-3 bg-primary/10 rounded-lg border-2 border-primary/30">
+                      <p className="text-lg font-bold text-primary">Стоимость: 800₽</p>
+                      <p className="text-xs text-muted-foreground mt-1">за одно занятие</p>
+                    </div>
                     <Button className="w-full" size="lg">Записаться</Button>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="kinologist" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>🐕 Услуги кинолога</CardTitle>
+                <CardDescription>Индивидуальные занятия с профессиональным кинологом</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="flex justify-center">
+                  <Calendar
+                    mode="single"
+                    selected={selectedDate}
+                    onSelect={setSelectedDate}
+                    className="rounded-md border"
+                    disabled={(date) => date < new Date()}
+                  />
+                </div>
+                {selectedDate && (
+                  <div className="p-4 bg-accent/50 rounded-lg space-y-4">
+                    <p className="font-medium">Выбранная дата: {selectedDate.toLocaleDateString('ru-RU')}</p>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Время занятия</label>
+                      <select className="w-full px-4 py-2 rounded-md border bg-background">
+                        <option>09:00 - 10:00</option>
+                        <option>11:00 - 12:00</option>
+                        <option>14:00 - 15:00</option>
+                        <option>16:00 - 17:00</option>
+                        <option>18:00 - 19:00</option>
+                      </select>
+                    </div>
+                    <div className="mt-3 p-3 bg-primary/10 rounded-lg border-2 border-primary/30">
+                      <p className="text-lg font-bold text-primary">Стоимость: от 3000₽</p>
+                      <p className="text-xs text-muted-foreground mt-1">за индивидуальное занятие</p>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Имя питомца</label>
+                      <input 
+                        type="text" 
+                        className="w-full px-4 py-2 rounded-md border bg-background" 
+                        placeholder="Кличка вашего питомца" 
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Порода</label>
+                      <input 
+                        type="text" 
+                        className="w-full px-4 py-2 rounded-md border bg-background" 
+                        placeholder="Например, Английский бульдог" 
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Ваше имя</label>
+                      <input 
+                        type="text" 
+                        className="w-full px-4 py-2 rounded-md border bg-background" 
+                        placeholder="Как к вам обращаться?" 
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Ваш телефон</label>
+                      <input 
+                        type="tel" 
+                        className="w-full px-4 py-2 rounded-md border bg-background" 
+                        placeholder="+7 (999) 123-45-67" 
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Опишите задачу</label>
+                      <textarea 
+                        className="w-full px-4 py-2 rounded-md border bg-background min-h-[80px]" 
+                        placeholder="Что хотите улучшить в поведении питомца?" 
+                      />
+                    </div>
+                    <Button className="w-full" size="lg">
+                      Отправить в WhatsApp
+                    </Button>
                   </div>
                 )}
               </CardContent>
