@@ -1,9 +1,95 @@
+import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import Icon from '@/components/ui/icon';
+import { useToast } from '@/hooks/use-toast';
+
 const GallerySection = () => {
-  const gallery = [
+  const { toast } = useToast();
+  const [gallery, setGallery] = useState([
     { url: 'https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/files/8ba251f4-713a-4df8-b0e5-95adfa989f67.jpg', name: 'Макс' },
     { url: 'https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/files/2a1e9638-3a15-42e7-bbcd-273ce3cc044e.jpg', name: 'Групповое занятие' },
     { url: 'https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/files/77a58d04-c426-4ba2-8457-f7bf40fe0aad.jpg', name: 'Комфортные условия' }
-  ];
+  ]);
+  const [showUploadDialog, setShowUploadDialog] = useState(false);
+  const [password, setPassword] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [photoName, setPhotoName] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
+
+  const UPLOAD_PASSWORD = '130125765';
+
+  useEffect(() => {
+    const savedPhotos = localStorage.getItem('galleryPhotos');
+    if (savedPhotos) {
+      try {
+        setGallery(JSON.parse(savedPhotos));
+      } catch (e) {
+        console.error('Failed to load gallery photos');
+      }
+    }
+  }, []);
+
+  const handlePasswordSubmit = () => {
+    if (password === UPLOAD_PASSWORD) {
+      setIsAuthenticated(true);
+      toast({
+        title: '✅ Доступ разрешён',
+        description: 'Теперь вы можете загружать фотографии',
+      });
+    } else {
+      toast({
+        title: '❌ Неверный пароль',
+        description: 'Попробуйте ещё раз',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedFile(e.target.files[0]);
+    }
+  };
+
+  const handleUpload = () => {
+    if (!selectedFile || !photoName) {
+      toast({
+        title: '❌ Ошибка',
+        description: 'Выберите файл и введите название',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setIsUploading(true);
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const newPhoto = {
+        url: e.target?.result as string,
+        name: photoName
+      };
+      
+      const updatedGallery = [...gallery, newPhoto];
+      setGallery(updatedGallery);
+      localStorage.setItem('galleryPhotos', JSON.stringify(updatedGallery));
+      
+      toast({
+        title: '✅ Фото добавлено',
+        description: 'Фотография успешно загружена в галерею',
+      });
+      
+      setSelectedFile(null);
+      setPhotoName('');
+      setShowUploadDialog(false);
+      setIsAuthenticated(false);
+      setPassword('');
+      setIsUploading(false);
+    };
+    
+    reader.readAsDataURL(selectedFile);
+  };
 
   return (
     <section id="gallery" className="py-20 bg-muted/30">
@@ -13,6 +99,14 @@ const GallerySection = () => {
           <p className="text-lg text-muted-foreground">
             Счастливые моменты с нашими любимцами
           </p>
+          <Button 
+            onClick={() => setShowUploadDialog(true)} 
+            className="mt-6"
+            variant="outline"
+          >
+            <Icon name="Upload" className="mr-2" size={18} />
+            Загрузить фото
+          </Button>
         </div>
         <div className="grid md:grid-cols-3 gap-6">
           {gallery.map((photo, index) => (
@@ -28,6 +122,78 @@ const GallerySection = () => {
             </div>
           ))}
         </div>
+
+        {showUploadDialog && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowUploadDialog(false)}>
+            <div className="bg-background rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-2xl font-bold">Загрузить фото</h3>
+                <button onClick={() => {
+                  setShowUploadDialog(false);
+                  setIsAuthenticated(false);
+                  setPassword('');
+                  setSelectedFile(null);
+                  setPhotoName('');
+                }}>
+                  <Icon name="X" size={24} />
+                </button>
+              </div>
+
+              {!isAuthenticated ? (
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Введите пароль</label>
+                    <input 
+                      type="password"
+                      className="w-full px-4 py-2 rounded-md border bg-background"
+                      placeholder="Пароль для загрузки"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && handlePasswordSubmit()}
+                    />
+                  </div>
+                  <Button onClick={handlePasswordSubmit} className="w-full">
+                    Подтвердить
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Название фото</label>
+                    <input 
+                      type="text"
+                      className="w-full px-4 py-2 rounded-md border bg-background"
+                      placeholder="Например, Дружок на прогулке"
+                      value={photoName}
+                      onChange={(e) => setPhotoName(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Выберите фото</label>
+                    <input 
+                      type="file"
+                      accept="image/*"
+                      className="w-full px-4 py-2 rounded-md border bg-background"
+                      onChange={handleFileSelect}
+                    />
+                  </div>
+                  {selectedFile && (
+                    <div className="text-sm text-muted-foreground">
+                      Выбран файл: {selectedFile.name}
+                    </div>
+                  )}
+                  <Button 
+                    onClick={handleUpload} 
+                    className="w-full"
+                    disabled={!selectedFile || !photoName || isUploading}
+                  >
+                    {isUploading ? 'Загрузка...' : 'Загрузить'}
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
