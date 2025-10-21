@@ -30,7 +30,7 @@ const ContactsSection = () => {
               <Icon name="MapPin" className="text-primary" size={28} />
             </div>
             <h3 className="font-bold text-lg">Адрес</h3>
-            <p className="text-muted-foreground">г. Москва, ул. Примерная, д. 1</p>
+            <p className="text-muted-foreground">г. Тула, проезд Рабочий 9а<br />У Нас Лапки</p>
           </div>
         </div>
       </div>
