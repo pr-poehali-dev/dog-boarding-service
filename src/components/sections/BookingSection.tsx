@@ -11,6 +11,8 @@ const BookingSection = () => {
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [boardingDateRange, setBoardingDateRange] = useState<DateRange | undefined>();
   const [boardingForm, setBoardingForm] = useState({ petName: '', breed: '', phone: '', name: '' });
+  const [trainingForm, setTrainingForm] = useState({ petName: '', name: '', phone: '', time: '10:00 - 11:00' });
+  const [kinologistForm, setKinologistForm] = useState({ petName: '', breed: '', name: '', phone: '', task: '', time: '09:00 - 10:00' });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleBookingSubmit = () => {
@@ -20,7 +22,7 @@ const BookingSection = () => {
     const cost = days * 1200;
     
     const whatsappNumber = '79105884816';
-    const message = `🐾 *Новое бронирование!*
+    const message = `🐾 *Новое бронирование передержки!*
 
 👤 Клиент: ${boardingForm.name}
 📞 Телефон: ${boardingForm.phone}
@@ -39,6 +41,57 @@ const BookingSection = () => {
     
     setBoardingForm({ petName: '', breed: '', phone: '', name: '' });
     setBoardingDateRange(undefined);
+  };
+
+  const handleTrainingSubmit = () => {
+    if (!selectedDate) return;
+    
+    const whatsappNumber = '79105884816';
+    const message = `🐾 *Запись в дневную группу!*
+
+👤 Клиент: ${trainingForm.name}
+📞 Телефон: ${trainingForm.phone}
+🐶 Питомец: ${trainingForm.petName}
+📅 Дата: ${selectedDate.toLocaleDateString('ru-RU')}
+⏰ Время: ${trainingForm.time}
+💰 Стоимость: 800₽`;
+    
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+    
+    toast({
+      title: '✅ Открываем WhatsApp!',
+      description: 'Отправьте сообщение для подтверждения записи.',
+    });
+    
+    setTrainingForm({ petName: '', name: '', phone: '', time: '10:00 - 11:00' });
+    setSelectedDate(undefined);
+  };
+
+  const handleKinologistSubmit = () => {
+    if (!selectedDate) return;
+    
+    const whatsappNumber = '79105884816';
+    const message = `🐕 *Запись на услуги кинолога!*
+
+👤 Клиент: ${kinologistForm.name}
+📞 Телефон: ${kinologistForm.phone}
+🐶 Питомец: ${kinologistForm.petName} (${kinologistForm.breed})
+📅 Дата: ${selectedDate.toLocaleDateString('ru-RU')}
+⏰ Время: ${kinologistForm.time}
+📝 Задача: ${kinologistForm.task}
+💰 Стоимость: от 3000₽`;
+    
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+    
+    toast({
+      title: '✅ Открываем WhatsApp!',
+      description: 'Отправьте сообщение для подтверждения записи.',
+    });
+    
+    setKinologistForm({ petName: '', breed: '', name: '', phone: '', task: '', time: '09:00 - 10:00' });
+    setSelectedDate(undefined);
   };
 
   return (
@@ -166,7 +219,11 @@ const BookingSection = () => {
                     <p className="font-medium">Выбранная дата: {selectedDate.toLocaleDateString('ru-RU')}</p>
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Время занятия</label>
-                      <select className="w-full px-4 py-2 rounded-md border bg-background">
+                      <select 
+                        className="w-full px-4 py-2 rounded-md border bg-background"
+                        value={trainingForm.time}
+                        onChange={(e) => setTrainingForm({...trainingForm, time: e.target.value})}
+                      >
                         <option>10:00 - 11:00</option>
                         <option>12:00 - 13:00</option>
                         <option>15:00 - 16:00</option>
@@ -175,21 +232,46 @@ const BookingSection = () => {
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Имя питомца</label>
-                      <input type="text" className="w-full px-4 py-2 rounded-md border bg-background" placeholder="Например, Макс" />
+                      <input 
+                        type="text" 
+                        className="w-full px-4 py-2 rounded-md border bg-background" 
+                        placeholder="Например, Макс" 
+                        value={trainingForm.petName}
+                        onChange={(e) => setTrainingForm({...trainingForm, petName: e.target.value})}
+                      />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Ваше имя</label>
-                      <input type="text" className="w-full px-4 py-2 rounded-md border bg-background" placeholder="Как к вам обращаться?" />
+                      <input 
+                        type="text" 
+                        className="w-full px-4 py-2 rounded-md border bg-background" 
+                        placeholder="Как к вам обращаться?" 
+                        value={trainingForm.name}
+                        onChange={(e) => setTrainingForm({...trainingForm, name: e.target.value})}
+                      />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Ваш телефон</label>
-                      <input type="tel" className="w-full px-4 py-2 rounded-md border bg-background" placeholder="+7 (999) 123-45-67" />
+                      <input 
+                        type="tel" 
+                        className="w-full px-4 py-2 rounded-md border bg-background" 
+                        placeholder="+7 (999) 123-45-67" 
+                        value={trainingForm.phone}
+                        onChange={(e) => setTrainingForm({...trainingForm, phone: e.target.value})}
+                      />
                     </div>
                     <div className="mt-3 p-3 bg-primary/10 rounded-lg border-2 border-primary/30">
                       <p className="text-lg font-bold text-primary">Стоимость: 800₽</p>
                       <p className="text-xs text-muted-foreground mt-1">за одно занятие</p>
                     </div>
-                    <Button className="w-full" size="lg">Записаться</Button>
+                    <Button 
+                      className="w-full" 
+                      size="lg"
+                      disabled={!trainingForm.petName || !trainingForm.name || !trainingForm.phone}
+                      onClick={handleTrainingSubmit}
+                    >
+                      Отправить в WhatsApp
+                    </Button>
                   </div>
                 )}
               </CardContent>
@@ -216,7 +298,11 @@ const BookingSection = () => {
                     <p className="font-medium">Выбранная дата: {selectedDate.toLocaleDateString('ru-RU')}</p>
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Время занятия</label>
-                      <select className="w-full px-4 py-2 rounded-md border bg-background">
+                      <select 
+                        className="w-full px-4 py-2 rounded-md border bg-background"
+                        value={kinologistForm.time}
+                        onChange={(e) => setKinologistForm({...kinologistForm, time: e.target.value})}
+                      >
                         <option>09:00 - 10:00</option>
                         <option>11:00 - 12:00</option>
                         <option>14:00 - 15:00</option>
@@ -234,6 +320,8 @@ const BookingSection = () => {
                         type="text" 
                         className="w-full px-4 py-2 rounded-md border bg-background" 
                         placeholder="Кличка вашего питомца" 
+                        value={kinologistForm.petName}
+                        onChange={(e) => setKinologistForm({...kinologistForm, petName: e.target.value})}
                       />
                     </div>
                     <div className="space-y-2">
@@ -242,6 +330,8 @@ const BookingSection = () => {
                         type="text" 
                         className="w-full px-4 py-2 rounded-md border bg-background" 
                         placeholder="Например, Английский бульдог" 
+                        value={kinologistForm.breed}
+                        onChange={(e) => setKinologistForm({...kinologistForm, breed: e.target.value})}
                       />
                     </div>
                     <div className="space-y-2">
@@ -250,6 +340,8 @@ const BookingSection = () => {
                         type="text" 
                         className="w-full px-4 py-2 rounded-md border bg-background" 
                         placeholder="Как к вам обращаться?" 
+                        value={kinologistForm.name}
+                        onChange={(e) => setKinologistForm({...kinologistForm, name: e.target.value})}
                       />
                     </div>
                     <div className="space-y-2">
@@ -258,6 +350,8 @@ const BookingSection = () => {
                         type="tel" 
                         className="w-full px-4 py-2 rounded-md border bg-background" 
                         placeholder="+7 (999) 123-45-67" 
+                        value={kinologistForm.phone}
+                        onChange={(e) => setKinologistForm({...kinologistForm, phone: e.target.value})}
                       />
                     </div>
                     <div className="space-y-2">
@@ -265,9 +359,16 @@ const BookingSection = () => {
                       <textarea 
                         className="w-full px-4 py-2 rounded-md border bg-background min-h-[80px]" 
                         placeholder="Что хотите улучшить в поведении питомца?" 
+                        value={kinologistForm.task}
+                        onChange={(e) => setKinologistForm({...kinologistForm, task: e.target.value})}
                       />
                     </div>
-                    <Button className="w-full" size="lg">
+                    <Button 
+                      className="w-full" 
+                      size="lg"
+                      disabled={!kinologistForm.petName || !kinologistForm.name || !kinologistForm.phone || !kinologistForm.task}
+                      onClick={handleKinologistSubmit}
+                    >
                       Отправить в WhatsApp
                     </Button>
                   </div>
