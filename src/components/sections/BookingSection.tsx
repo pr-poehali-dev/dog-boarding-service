@@ -10,9 +10,9 @@ const BookingSection = () => {
   const { toast } = useToast();
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [boardingDateRange, setBoardingDateRange] = useState<DateRange | undefined>();
-  const [boardingForm, setBoardingForm] = useState({ petName: '', breed: '', phone: '', name: '' });
-  const [trainingForm, setTrainingForm] = useState({ petName: '', name: '', phone: '', time: '10:00 - 11:00' });
-  const [kinologistForm, setKinologistForm] = useState({ petName: '', breed: '', name: '', phone: '', task: '', time: '09:00 - 10:00' });
+  const [boardingForm, setBoardingForm] = useState({ petName: '', breed: '', age: '', phone: '', name: '' });
+  const [trainingForm, setTrainingForm] = useState({ petName: '', breed: '', age: '', name: '', phone: '', time: '08:00 - 09:00' });
+  const [kinologistForm, setKinologistForm] = useState({ petName: '', breed: '', age: '', name: '', phone: '', task: '', time: '08:00 - 09:00' });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleBookingSubmit = () => {
@@ -26,7 +26,9 @@ const BookingSection = () => {
 
 👤 Клиент: ${boardingForm.name}
 📞 Телефон: ${boardingForm.phone}
-🐶 Питомец: ${boardingForm.petName} (${boardingForm.breed})
+🐶 Питомец: ${boardingForm.petName}
+🐕 Порода: ${boardingForm.breed}
+🎂 Возраст: ${boardingForm.age}
 📅 Даты: ${boardingDateRange.from.toLocaleDateString('ru-RU')} - ${boardingDateRange.to.toLocaleDateString('ru-RU')}
 📆 Количество дней: ${days}
 💰 Стоимость: ${cost.toLocaleString('ru-RU')}₽`;
@@ -39,7 +41,7 @@ const BookingSection = () => {
       description: 'Отправьте сообщение для подтверждения бронирования.',
     });
     
-    setBoardingForm({ petName: '', breed: '', phone: '', name: '' });
+    setBoardingForm({ petName: '', breed: '', age: '', phone: '', name: '' });
     setBoardingDateRange(undefined);
   };
 
@@ -52,6 +54,8 @@ const BookingSection = () => {
 👤 Клиент: ${trainingForm.name}
 📞 Телефон: ${trainingForm.phone}
 🐶 Питомец: ${trainingForm.petName}
+🐕 Порода: ${trainingForm.breed}
+🎂 Возраст: ${trainingForm.age}
 📅 Дата: ${selectedDate.toLocaleDateString('ru-RU')}
 ⏰ Время: ${trainingForm.time}
 💰 Стоимость: 800₽`;
@@ -64,7 +68,7 @@ const BookingSection = () => {
       description: 'Отправьте сообщение для подтверждения записи.',
     });
     
-    setTrainingForm({ petName: '', name: '', phone: '', time: '10:00 - 11:00' });
+    setTrainingForm({ petName: '', breed: '', age: '', name: '', phone: '', time: '08:00 - 09:00' });
     setSelectedDate(undefined);
   };
 
@@ -76,7 +80,9 @@ const BookingSection = () => {
 
 👤 Клиент: ${kinologistForm.name}
 📞 Телефон: ${kinologistForm.phone}
-🐶 Питомец: ${kinologistForm.petName} (${kinologistForm.breed})
+🐶 Питомец: ${kinologistForm.petName}
+🐕 Порода: ${kinologistForm.breed}
+🎂 Возраст: ${kinologistForm.age}
 📅 Дата: ${selectedDate.toLocaleDateString('ru-RU')}
 ⏰ Время: ${kinologistForm.time}
 📝 Задача: ${kinologistForm.task}
@@ -90,7 +96,7 @@ const BookingSection = () => {
       description: 'Отправьте сообщение для подтверждения записи.',
     });
     
-    setKinologistForm({ petName: '', breed: '', name: '', phone: '', task: '', time: '09:00 - 10:00' });
+    setKinologistForm({ petName: '', breed: '', age: '', name: '', phone: '', task: '', time: '08:00 - 09:00' });
     setSelectedDate(undefined);
   };
 
@@ -166,6 +172,16 @@ const BookingSection = () => {
                       />
                     </div>
                     <div className="space-y-2">
+                      <label className="text-sm font-medium">Возраст</label>
+                      <input 
+                        type="text" 
+                        className="w-full px-4 py-2 rounded-md border bg-background" 
+                        placeholder="Например, 3 года" 
+                        value={boardingForm.age}
+                        onChange={(e) => setBoardingForm({...boardingForm, age: e.target.value})}
+                      />
+                    </div>
+                    <div className="space-y-2">
                       <label className="text-sm font-medium">Ваше имя</label>
                       <input 
                         type="text" 
@@ -224,10 +240,18 @@ const BookingSection = () => {
                         value={trainingForm.time}
                         onChange={(e) => setTrainingForm({...trainingForm, time: e.target.value})}
                       >
+                        <option>08:00 - 09:00</option>
+                        <option>09:00 - 10:00</option>
                         <option>10:00 - 11:00</option>
+                        <option>11:00 - 12:00</option>
                         <option>12:00 - 13:00</option>
+                        <option>13:00 - 14:00</option>
+                        <option>14:00 - 15:00</option>
                         <option>15:00 - 16:00</option>
+                        <option>16:00 - 17:00</option>
                         <option>17:00 - 18:00</option>
+                        <option>18:00 - 19:00</option>
+                        <option>19:00 - 20:00</option>
                       </select>
                     </div>
                     <div className="space-y-2">
@@ -238,6 +262,26 @@ const BookingSection = () => {
                         placeholder="Например, Макс" 
                         value={trainingForm.petName}
                         onChange={(e) => setTrainingForm({...trainingForm, petName: e.target.value})}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Порода</label>
+                      <input 
+                        type="text" 
+                        className="w-full px-4 py-2 rounded-md border bg-background" 
+                        placeholder="Например, Английский бульдог" 
+                        value={trainingForm.breed}
+                        onChange={(e) => setTrainingForm({...trainingForm, breed: e.target.value})}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Возраст</label>
+                      <input 
+                        type="text" 
+                        className="w-full px-4 py-2 rounded-md border bg-background" 
+                        placeholder="Например, 2 года" 
+                        value={trainingForm.age}
+                        onChange={(e) => setTrainingForm({...trainingForm, age: e.target.value})}
                       />
                     </div>
                     <div className="space-y-2">
@@ -303,11 +347,18 @@ const BookingSection = () => {
                         value={kinologistForm.time}
                         onChange={(e) => setKinologistForm({...kinologistForm, time: e.target.value})}
                       >
+                        <option>08:00 - 09:00</option>
                         <option>09:00 - 10:00</option>
+                        <option>10:00 - 11:00</option>
                         <option>11:00 - 12:00</option>
+                        <option>12:00 - 13:00</option>
+                        <option>13:00 - 14:00</option>
                         <option>14:00 - 15:00</option>
+                        <option>15:00 - 16:00</option>
                         <option>16:00 - 17:00</option>
+                        <option>17:00 - 18:00</option>
                         <option>18:00 - 19:00</option>
+                        <option>19:00 - 20:00</option>
                       </select>
                     </div>
                     <div className="mt-3 p-3 bg-primary/10 rounded-lg border-2 border-primary/30">
@@ -332,6 +383,16 @@ const BookingSection = () => {
                         placeholder="Например, Английский бульдог" 
                         value={kinologistForm.breed}
                         onChange={(e) => setKinologistForm({...kinologistForm, breed: e.target.value})}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Возраст</label>
+                      <input 
+                        type="text" 
+                        className="w-full px-4 py-2 rounded-md border bg-background" 
+                        placeholder="Например, 1 год" 
+                        value={kinologistForm.age}
+                        onChange={(e) => setKinologistForm({...kinologistForm, age: e.target.value})}
                       />
                     </div>
                     <div className="space-y-2">

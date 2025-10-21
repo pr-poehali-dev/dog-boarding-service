@@ -29,7 +29,7 @@ const WhyChooseUs = () => {
             <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto transition-all duration-300 group-hover:scale-110 group-hover:bg-primary/20">
               <Icon name="Star" className="text-primary transition-transform duration-300 group-hover:scale-110" size={32} />
             </div>
-            <h3 className="text-xl font-bold">Опыт 10+ лет</h3>
+            <h3 className="text-xl font-bold">Современный подход к работе</h3>
             <p className="text-muted-foreground">Профессиональные кинологи с большим опытом работы</p>
           </div>
         </div>
