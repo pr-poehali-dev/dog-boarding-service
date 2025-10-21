@@ -15,6 +15,24 @@ const BookingSection = () => {
   const [kinologistForm, setKinologistForm] = useState({ petName: '', breed: '', age: '', name: '', phone: '', task: '', time: '08:00 - 09:00' });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const formatPhoneNumber = (value: string) => {
+    const cleaned = value.replace(/\D/g, '');
+    
+    if (cleaned.startsWith('8')) {
+      return '+7' + cleaned.slice(1);
+    }
+    
+    if (cleaned.startsWith('7')) {
+      return '+' + cleaned;
+    }
+    
+    if (cleaned.length > 0) {
+      return '+7' + cleaned;
+    }
+    
+    return '';
+  };
+
   const handleBookingSubmit = () => {
     if (!boardingDateRange?.from || !boardingDateRange?.to) return;
     
@@ -198,7 +216,7 @@ const BookingSection = () => {
                         className="w-full px-4 py-2 rounded-md border bg-background" 
                         placeholder="+7 (999) 123-45-67" 
                         value={boardingForm.phone}
-                        onChange={(e) => setBoardingForm({...boardingForm, phone: e.target.value})}
+                        onChange={(e) => setBoardingForm({...boardingForm, phone: formatPhoneNumber(e.target.value)})}
                       />
                     </div>
                     <Button 
@@ -301,7 +319,7 @@ const BookingSection = () => {
                         className="w-full px-4 py-2 rounded-md border bg-background" 
                         placeholder="+7 (999) 123-45-67" 
                         value={trainingForm.phone}
-                        onChange={(e) => setTrainingForm({...trainingForm, phone: e.target.value})}
+                        onChange={(e) => setTrainingForm({...trainingForm, phone: formatPhoneNumber(e.target.value)})}
                       />
                     </div>
                     <div className="mt-3 p-3 bg-primary/10 rounded-lg border-2 border-primary/30">
@@ -412,7 +430,7 @@ const BookingSection = () => {
                         className="w-full px-4 py-2 rounded-md border bg-background" 
                         placeholder="+7 (999) 123-45-67" 
                         value={kinologistForm.phone}
-                        onChange={(e) => setKinologistForm({...kinologistForm, phone: e.target.value})}
+                        onChange={(e) => setKinologistForm({...kinologistForm, phone: formatPhoneNumber(e.target.value)})}
                       />
                     </div>
                     <div className="space-y-2">
