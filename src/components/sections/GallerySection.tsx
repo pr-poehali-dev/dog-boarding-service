@@ -16,6 +16,9 @@ const GallerySection = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [photoName, setPhotoName] = useState('');
   const [isUploading, setIsUploading] = useState(false);
+  const [showDeleteMode, setShowDeleteMode] = useState(false);
+  const [deletePassword, setDeletePassword] = useState('');
+  const [isDeleteAuthenticated, setIsDeleteAuthenticated] = useState(false);
 
   const UPLOAD_PASSWORD = '130125765';
 
@@ -91,6 +94,44 @@ const GallerySection = () => {
     reader.readAsDataURL(selectedFile);
   };
 
+  const handleDeleteModeToggle = () => {
+    if (isDeleteAuthenticated) {
+      setShowDeleteMode(!showDeleteMode);
+    } else {
+      const enteredPassword = prompt('Введите пароль для удаления:');
+      if (enteredPassword === UPLOAD_PASSWORD) {
+        setIsDeleteAuthenticated(true);
+        setShowDeleteMode(true);
+        toast({
+          title: '✅ Режим удаления активирован',
+          description: 'Нажмите на фото, чтобы удалить',
+        });
+      } else if (enteredPassword !== null) {
+        toast({
+          title: '❌ Неверный пароль',
+          description: 'Доступ запрещён',
+          variant: 'destructive',
+        });
+      }
+    }
+  };
+
+  const handleDeletePhoto = (index: number) => {
+    if (!isDeleteAuthenticated) return;
+    
+    const confirmed = confirm(`Удалить фото "${gallery[index].name}"?`);
+    if (confirmed) {
+      const updatedGallery = gallery.filter((_, i) => i !== index);
+      setGallery(updatedGallery);
+      localStorage.setItem('galleryPhotos', JSON.stringify(updatedGallery));
+      
+      toast({
+        title: '✅ Фото удалено',
+        description: 'Фотография успешно удалена из галереи',
+      });
+    }
+  };
+
   return (
     <section id="gallery" className="py-20 bg-muted/30">
       <div className="container">
@@ -99,18 +140,32 @@ const GallerySection = () => {
           <p className="text-lg text-muted-foreground">
             Счастливые моменты с нашими любимцами
           </p>
-          <Button 
-            onClick={() => setShowUploadDialog(true)} 
-            className="mt-6"
-            variant="outline"
-          >
-            <Icon name="Upload" className="mr-2" size={18} />
-            Загрузить фото
-          </Button>
+          <div className="flex gap-4 justify-center mt-6">
+            <Button 
+              onClick={() => setShowUploadDialog(true)} 
+              variant="outline"
+            >
+              <Icon name="Upload" className="mr-2" size={18} />
+              Загрузить фото
+            </Button>
+            <Button 
+              onClick={handleDeleteModeToggle}
+              variant={showDeleteMode ? "destructive" : "outline"}
+            >
+              <Icon name="Trash2" className="mr-2" size={18} />
+              {showDeleteMode ? 'Выключить удаление' : 'Удалить фото'}
+            </Button>
+          </div>
         </div>
         <div className="grid md:grid-cols-3 gap-6">
           {gallery.map((photo, index) => (
-            <div key={index} className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all">
+            <div 
+              key={index} 
+              className={`group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all ${
+                showDeleteMode ? 'cursor-pointer ring-2 ring-destructive' : ''
+              }`}
+              onClick={() => showDeleteMode && handleDeletePhoto(index)}
+            >
               <img
                 src={photo.url}
                 alt={photo.name}
@@ -119,6 +174,14 @@ const GallerySection = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
                 <p className="text-white font-semibold text-xl">{photo.name}</p>
               </div>
+              {showDeleteMode && (
+                <div className="absolute inset-0 bg-destructive/80 flex items-center justify-center">
+                  <div className="text-center text-white">
+                    <Icon name="Trash2" size={48} className="mx-auto mb-2" />
+                    <p className="font-bold">Нажмите, чтобы удалить</p>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
