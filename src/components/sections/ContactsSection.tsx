@@ -30,7 +30,14 @@ const ContactsSection = () => {
               <Icon name="MapPin" className="text-primary" size={28} />
             </div>
             <h3 className="font-bold text-lg">Адрес</h3>
-            <p className="text-muted-foreground">г. Тула, проезд Рабочий 9а<br />У Нас Лапки</p>
+            <a 
+              href="https://yandex.ru/profile/100479616846?lang=ru" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-primary transition-colors inline-block"
+            >
+              г. Тула, проезд Рабочий 9а<br />У Нас Лапки
+            </a>
           </div>
         </div>
       </div>
