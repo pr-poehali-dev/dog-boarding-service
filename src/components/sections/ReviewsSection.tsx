@@ -31,7 +31,7 @@ const ReviewsSection = () => {
         </div>
         <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {reviews.map((review, index) => (
-            <Card key={index} className="hover:shadow-lg transition-shadow">
+            <Card key={index} className="hover:shadow-xl transition-all duration-300 hover:-translate-y-2 hover:border-primary/30">
               <CardContent className="pt-6">
                 <div className="flex gap-1 mb-4">
                   {[...Array(review.rating)].map((_, i) => (
