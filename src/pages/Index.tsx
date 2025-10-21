@@ -16,14 +16,30 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
-      <Header scrollToSection={scrollToSection} />
-      <HeroSection scrollToSection={scrollToSection} />
-      <WhyChooseUs />
-      <ServicesSection />
-      <BookingSection />
-      <GallerySection />
-      <ReviewsSection />
-      <ContactsSection />
+      <div className="animate-fade-in">
+        <Header scrollToSection={scrollToSection} />
+      </div>
+      <div className="animate-fade-in" style={{ animationDelay: '100ms' }}>
+        <HeroSection scrollToSection={scrollToSection} />
+      </div>
+      <div className="animate-fade-in" style={{ animationDelay: '200ms' }}>
+        <WhyChooseUs />
+      </div>
+      <div className="animate-fade-in" style={{ animationDelay: '300ms' }}>
+        <ServicesSection />
+      </div>
+      <div className="animate-fade-in" style={{ animationDelay: '400ms' }}>
+        <BookingSection />
+      </div>
+      <div className="animate-fade-in" style={{ animationDelay: '500ms' }}>
+        <GallerySection />
+      </div>
+      <div className="animate-fade-in" style={{ animationDelay: '600ms' }}>
+        <ReviewsSection />
+      </div>
+      <div className="animate-fade-in" style={{ animationDelay: '700ms' }}>
+        <ContactsSection />
+      </div>
       
       <WhatsAppButton />
       
