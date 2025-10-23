@@ -9,6 +9,21 @@ const HeroSection = ({ scrollToSection }: HeroSectionProps) => {
     <section id="hero" className="relative py-16 md:py-24 overflow-hidden bg-gradient-to-b from-accent/30 to-background">
       <div className="container">
         <div className="text-center space-y-8 animate-fade-in">
+          <div className="flex justify-center mb-12">
+            <a 
+              href="https://vk.com/wall-232492043_54" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="group"
+            >
+              <Button 
+                size="lg" 
+                className="text-2xl md:text-4xl px-12 md:px-16 py-8 md:py-12 font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 bg-gradient-to-r from-primary via-accent to-primary bg-size-200 animate-gradient"
+              >
+                🏆 Участвовать в конкурсе
+              </Button>
+            </a>
+          </div>
           <div className="flex justify-center mb-8">
             <img
               src="https://cdn.poehali.dev/files/7d114a4f-545b-4114-a2ba-28bc4d7d2770.png"
