@@ -11,7 +11,7 @@ const GallerySection = () => {
   const [showUploadDialog, setShowUploadDialog] = useState(false);
   const [password, setPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [photoName, setPhotoName] = useState('');
   const [isUploading, setIsUploading] = useState(false);
   const [showDeleteMode, setShowDeleteMode] = useState(false);
@@ -56,28 +56,35 @@ const GallerySection = () => {
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setSelectedFile(e.target.files[0]);
+    if (e.target.files) {
+      setSelectedFiles(Array.from(e.target.files));
     }
   };
 
   const handleUpload = async () => {
-    if (!selectedFile || !photoName) {
+    if (selectedFiles.length === 0) {
       toast({
         title: '❌ Ошибка',
-        description: 'Выберите файл и введите название',
+        description: 'Выберите хотя бы одно фото',
         variant: 'destructive',
       });
       return;
     }
 
     setIsUploading(true);
-    
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const dataUrl = e.target?.result as string;
-      
+    let uploadedCount = 0;
+    let failedCount = 0;
+
+    for (const file of selectedFiles) {
       try {
+        const dataUrl = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target?.result as string);
+          reader.readAsDataURL(file);
+        });
+
+        const fileName = photoName || file.name.replace(/\.[^/.]+$/, '');
+
         const response = await fetch(GALLERY_API, {
           method: 'POST',
           headers: {
@@ -85,45 +92,44 @@ const GallerySection = () => {
             'X-Password': password,
           },
           body: JSON.stringify({
-            name: photoName,
+            name: selectedFiles.length > 1 ? `${fileName} ${uploadedCount + 1}` : fileName,
             url: dataUrl
           })
         });
 
-        const result = await response.json();
-
         if (response.ok) {
-          toast({
-            title: '✅ Фото добавлено',
-            description: 'Фотография успешно загружена в галерею',
-          });
-          
-          await loadGallery();
-          
-          setSelectedFile(null);
-          setPhotoName('');
-          setShowUploadDialog(false);
-          setIsAuthenticated(false);
-          setPassword('');
+          uploadedCount++;
         } else {
-          toast({
-            title: '❌ Ошибка',
-            description: result.error || 'Не удалось загрузить фото',
-            variant: 'destructive',
-          });
+          failedCount++;
         }
       } catch (error) {
-        toast({
-          title: '❌ Ошибка',
-          description: 'Не удалось загрузить фото',
-          variant: 'destructive',
-        });
-      } finally {
-        setIsUploading(false);
+        failedCount++;
       }
-    };
-    
-    reader.readAsDataURL(selectedFile);
+    }
+
+    setIsUploading(false);
+
+    if (uploadedCount > 0) {
+      toast({
+        title: '✅ Фото загружены',
+        description: `Успешно загружено: ${uploadedCount} из ${selectedFiles.length}`,
+      });
+      await loadGallery();
+    }
+
+    if (failedCount > 0) {
+      toast({
+        title: '⚠️ Не все фото загружены',
+        description: `Не удалось загрузить: ${failedCount} фото`,
+        variant: 'destructive',
+      });
+    }
+
+    setSelectedFiles([]);
+    setPhotoName('');
+    setShowUploadDialog(false);
+    setIsAuthenticated(false);
+    setPassword('');
   };
 
   const handleDeleteModeToggle = () => {
@@ -258,7 +264,7 @@ const GallerySection = () => {
                   setShowUploadDialog(false);
                   setIsAuthenticated(false);
                   setPassword('');
-                  setSelectedFile(null);
+                  setSelectedFiles([]);
                   setPhotoName('');
                 }}>
                   <Icon name="X" size={24} />
@@ -285,7 +291,9 @@ const GallerySection = () => {
               ) : (
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium mb-2 block">Название фото</label>
+                    <label className="text-sm font-medium mb-2 block">
+                      Название (необязательно для нескольких фото)
+                    </label>
                     <input 
                       type="text"
                       className="w-full px-4 py-2 rounded-md border bg-background"
@@ -299,21 +307,27 @@ const GallerySection = () => {
                     <input 
                       type="file"
                       accept="image/*"
+                      multiple
                       className="w-full px-4 py-2 rounded-md border bg-background"
                       onChange={handleFileSelect}
                     />
                   </div>
-                  {selectedFile && (
-                    <div className="text-sm text-muted-foreground">
-                      Выбран файл: {selectedFile.name}
+                  {selectedFiles.length > 0 && (
+                    <div className="text-sm text-muted-foreground space-y-1">
+                      <p className="font-semibold">Выбрано файлов: {selectedFiles.length}</p>
+                      <div className="max-h-32 overflow-y-auto space-y-1">
+                        {selectedFiles.map((file, i) => (
+                          <div key={i} className="truncate">• {file.name}</div>
+                        ))}
+                      </div>
                     </div>
                   )}
                   <Button 
                     onClick={handleUpload} 
                     className="w-full"
-                    disabled={!selectedFile || !photoName || isUploading}
+                    disabled={selectedFiles.length === 0 || isUploading}
                   >
-                    {isUploading ? 'Загрузка...' : 'Загрузить'}
+                    {isUploading ? 'Загрузка...' : `Загрузить (${selectedFiles.length})`}
                   </Button>
                 </div>
               )}
