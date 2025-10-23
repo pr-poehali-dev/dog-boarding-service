@@ -1,0 +1,27 @@
+{
+  "tests": [
+    {
+      "name": "Get gallery photos",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Add photo with password",
+      "method": "POST",
+      "path": "/",
+      "headers": {
+        "X-Password": "130125765"
+      },
+      "body": {
+        "name": "Test Photo",
+        "url": "https://example.com/test.jpg"
+      },
+      "expectedStatus": 201,
+      "expectedBody": {
+        "success": true
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

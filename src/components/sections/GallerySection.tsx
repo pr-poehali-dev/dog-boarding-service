@@ -3,13 +3,11 @@ import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
 
+const GALLERY_API = 'https://functions.poehali.dev/66ee5a7d-a386-43a8-861e-8c0a9d2fd130';
+
 const GallerySection = () => {
   const { toast } = useToast();
-  const [gallery, setGallery] = useState([
-    { url: 'https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/files/8ba251f4-713a-4df8-b0e5-95adfa989f67.jpg', name: 'Макс' },
-    { url: 'https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/files/2a1e9638-3a15-42e7-bbcd-273ce3cc044e.jpg', name: 'Групповое занятие' },
-    { url: 'https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/files/77a58d04-c426-4ba2-8457-f7bf40fe0aad.jpg', name: 'Комфортные условия' }
-  ]);
+  const [gallery, setGallery] = useState<Array<{ id: number; url: string; name: string }>>([]);
   const [showUploadDialog, setShowUploadDialog] = useState(false);
   const [password, setPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -23,15 +21,23 @@ const GallerySection = () => {
   const UPLOAD_PASSWORD = '130125765';
 
   useEffect(() => {
-    const savedPhotos = localStorage.getItem('galleryPhotos');
-    if (savedPhotos) {
-      try {
-        setGallery(JSON.parse(savedPhotos));
-      } catch (e) {
-        console.error('Failed to load gallery photos');
-      }
-    }
+    loadGallery();
   }, []);
+
+  const loadGallery = async () => {
+    try {
+      const response = await fetch(GALLERY_API);
+      const data = await response.json();
+      setGallery(data.photos || []);
+    } catch (error) {
+      console.error('Failed to load gallery:', error);
+      toast({
+        title: '❌ Ошибка загрузки',
+        description: 'Не удалось загрузить фотографии',
+        variant: 'destructive',
+      });
+    }
+  };
 
   const handlePasswordSubmit = () => {
     if (password === UPLOAD_PASSWORD) {
@@ -55,7 +61,7 @@ const GallerySection = () => {
     }
   };
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (!selectedFile || !photoName) {
       toast({
         title: '❌ Ошибка',
@@ -68,27 +74,53 @@ const GallerySection = () => {
     setIsUploading(true);
     
     const reader = new FileReader();
-    reader.onload = (e) => {
-      const newPhoto = {
-        url: e.target?.result as string,
-        name: photoName
-      };
+    reader.onload = async (e) => {
+      const dataUrl = e.target?.result as string;
       
-      const updatedGallery = [...gallery, newPhoto];
-      setGallery(updatedGallery);
-      localStorage.setItem('galleryPhotos', JSON.stringify(updatedGallery));
-      
-      toast({
-        title: '✅ Фото добавлено',
-        description: 'Фотография успешно загружена в галерею',
-      });
-      
-      setSelectedFile(null);
-      setPhotoName('');
-      setShowUploadDialog(false);
-      setIsAuthenticated(false);
-      setPassword('');
-      setIsUploading(false);
+      try {
+        const response = await fetch(GALLERY_API, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Password': password,
+          },
+          body: JSON.stringify({
+            name: photoName,
+            url: dataUrl
+          })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          toast({
+            title: '✅ Фото добавлено',
+            description: 'Фотография успешно загружена в галерею',
+          });
+          
+          await loadGallery();
+          
+          setSelectedFile(null);
+          setPhotoName('');
+          setShowUploadDialog(false);
+          setIsAuthenticated(false);
+          setPassword('');
+        } else {
+          toast({
+            title: '❌ Ошибка',
+            description: result.error || 'Не удалось загрузить фото',
+            variant: 'destructive',
+          });
+        }
+      } catch (error) {
+        toast({
+          title: '❌ Ошибка',
+          description: 'Не удалось загрузить фото',
+          variant: 'destructive',
+        });
+      } finally {
+        setIsUploading(false);
+      }
     };
     
     reader.readAsDataURL(selectedFile);
@@ -116,19 +148,50 @@ const GallerySection = () => {
     }
   };
 
-  const handleDeletePhoto = (index: number) => {
+  const handleDeletePhoto = async (photoId: number, photoName: string) => {
     if (!isDeleteAuthenticated) return;
     
-    const confirmed = confirm(`Удалить фото "${gallery[index].name}"?`);
+    const confirmed = confirm(`Удалить фото "${photoName}"?`);
     if (confirmed) {
-      const updatedGallery = gallery.filter((_, i) => i !== index);
-      setGallery(updatedGallery);
-      localStorage.setItem('galleryPhotos', JSON.stringify(updatedGallery));
-      
-      toast({
-        title: '✅ Фото удалено',
-        description: 'Фотография успешно удалена из галереи',
-      });
+      try {
+        const enteredPassword = prompt('Введите пароль еще раз:');
+        if (enteredPassword !== UPLOAD_PASSWORD) {
+          toast({
+            title: '❌ Неверный пароль',
+            description: 'Операция отменена',
+            variant: 'destructive',
+          });
+          return;
+        }
+
+        const response = await fetch(`${GALLERY_API}?id=${photoId}`, {
+          method: 'DELETE',
+          headers: {
+            'X-Password': enteredPassword,
+          },
+        });
+
+        if (response.ok) {
+          toast({
+            title: '✅ Фото удалено',
+            description: 'Фотография успешно удалена из галереи',
+          });
+          await loadGallery();
+        } else {
+          const result = await response.json();
+          toast({
+            title: '❌ Ошибка',
+            description: result.error || 'Не удалось удалить фото',
+            variant: 'destructive',
+          });
+        }
+      } catch (error) {
+        toast({
+          title: '❌ Ошибка',
+          description: 'Не удалось удалить фото',
+          variant: 'destructive',
+        });
+      }
     }
   };
 
@@ -158,13 +221,13 @@ const GallerySection = () => {
           </div>
         </div>
         <div className="grid md:grid-cols-3 gap-6">
-          {gallery.map((photo, index) => (
+          {gallery.map((photo) => (
             <div 
-              key={index} 
+              key={photo.id} 
               className={`group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all ${
                 showDeleteMode ? 'cursor-pointer ring-2 ring-destructive' : ''
               }`}
-              onClick={() => showDeleteMode && handleDeletePhoto(index)}
+              onClick={() => showDeleteMode && handleDeletePhoto(photo.id, photo.name)}
             >
               <img
                 src={photo.url}
