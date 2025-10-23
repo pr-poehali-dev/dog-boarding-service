@@ -64,7 +64,10 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     
     try:
         if method == 'GET':
-            cur.execute('SELECT id, name, url, created_at FROM t_p55554963_dog_boarding_service.gallery_photos ORDER BY created_at DESC')
+            # Исключаем base64 фото, так как они слишком большие для ответа
+            cur.execute(
+                "SELECT id, name, url, created_at FROM t_p55554963_dog_boarding_service.gallery_photos WHERE url NOT LIKE 'data:image%' ORDER BY created_at DESC LIMIT 50"
+            )
             rows = cur.fetchall()
             photos = [{'id': row[0], 'name': row[1], 'url': row[2], 'created_at': str(row[3])} for row in rows]
             
