@@ -1,7 +1,7 @@
 import Icon from '@/components/ui/icon';
 
 const WhatsAppButton = () => {
-  const whatsappNumber = '79105884816';
+  const whatsappNumber = '79107020758';
   const defaultMessage = 'Здравствуйте! Хочу узнать подробнее об услугах У Нас Лапки 🐾';
 
   const handleClick = () => {

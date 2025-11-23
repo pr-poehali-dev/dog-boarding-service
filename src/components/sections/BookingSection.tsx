@@ -37,7 +37,7 @@ const BookingSection = () => {
     if (!boardingDateRange?.from || !boardingDateRange?.to) return;
     
     const days = Math.ceil((boardingDateRange.to.getTime() - boardingDateRange.from.getTime()) / (1000 * 60 * 60 * 24));
-    const cost = days * 1200;
+    const cost = days * 1800;
     
     const whatsappNumber = '79107020758';
     const message = `🐾 *Новое бронирование передержки!*
@@ -162,9 +162,9 @@ const BookingSection = () => {
                           </p>
                           <div className="mt-3 p-3 bg-primary/10 rounded-lg border-2 border-primary/30">
                             <p className="text-lg font-bold text-primary">
-                              Стоимость: {(Math.ceil((boardingDateRange.to.getTime() - boardingDateRange.from.getTime()) / (1000 * 60 * 60 * 24)) * 1200).toLocaleString('ru-RU')}₽
+                              Стоимость: {(Math.ceil((boardingDateRange.to.getTime() - boardingDateRange.from.getTime()) / (1000 * 60 * 60 * 24)) * 1800).toLocaleString('ru-RU')}₽
                             </p>
-                            <p className="text-xs text-muted-foreground mt-1">1200₽ за сутки</p>
+                            <p className="text-xs text-muted-foreground mt-1">1800₽ за сутки</p>
                           </div>
                         </>
                       )}
