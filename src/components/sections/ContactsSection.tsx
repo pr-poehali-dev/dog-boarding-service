@@ -17,12 +17,12 @@ const ContactsSection = () => {
             </div>
             <h3 className="font-bold text-lg">Телефон</h3>
             <a 
-              href="https://wa.me/79105884816" 
+              href="https://wa.me/79107020758" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors inline-block"
             >
-              +7 (910) 588-48-16
+              +7 (910) 702-07-58
             </a>
           </div>
           <div className="text-center space-y-3">

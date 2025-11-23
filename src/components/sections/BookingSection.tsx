@@ -39,7 +39,7 @@ const BookingSection = () => {
     const days = Math.ceil((boardingDateRange.to.getTime() - boardingDateRange.from.getTime()) / (1000 * 60 * 60 * 24));
     const cost = days * 1200;
     
-    const whatsappNumber = '79105884816';
+    const whatsappNumber = '79107020758';
     const message = `🐾 *Новое бронирование передержки!*
 
 👤 Клиент: ${boardingForm.name}
@@ -66,7 +66,7 @@ const BookingSection = () => {
   const handleTrainingSubmit = () => {
     if (!selectedDate) return;
     
-    const whatsappNumber = '79105884816';
+    const whatsappNumber = '79107020758';
     const message = `🐾 *Запись в дневную группу!*
 
 👤 Клиент: ${trainingForm.name}
@@ -93,7 +93,7 @@ const BookingSection = () => {
   const handleKinologistSubmit = () => {
     if (!selectedDate) return;
     
-    const whatsappNumber = '79105884816';
+    const whatsappNumber = '79107020758';
     const message = `🐕 *Запись на услуги кинолога!*
 
 👤 Клиент: ${kinologistForm.name}

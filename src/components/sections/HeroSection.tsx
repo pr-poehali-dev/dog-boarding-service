@@ -11,7 +11,7 @@ const HeroSection = ({ scrollToSection }: HeroSectionProps) => {
         <div className="text-center space-y-8 animate-fade-in">
           <div className="flex justify-center mb-12">
             <a 
-              href="https://vk.com/wall-232492043_54" 
+              href="https://wa.me/79107020758" 
               target="_blank" 
               rel="noopener noreferrer"
               className="group"
@@ -20,7 +20,7 @@ const HeroSection = ({ scrollToSection }: HeroSectionProps) => {
                 size="lg" 
                 className="text-2xl md:text-4xl px-12 md:px-16 py-8 md:py-12 font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 bg-gradient-to-r from-primary via-accent to-primary bg-size-200 animate-gradient"
               >
-                🏆 Участвовать в конкурсе
+                💬 Написать нам в WhatsApp
               </Button>
             </a>
           </div>
