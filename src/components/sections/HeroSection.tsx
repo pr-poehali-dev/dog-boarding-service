@@ -11,16 +11,16 @@ const HeroSection = ({ scrollToSection }: HeroSectionProps) => {
         <div className="text-center space-y-8 animate-fade-in">
           <div className="flex justify-center mb-12">
             <a 
-              href="https://wa.me/79107020758" 
+              href="https://t.me/+r6XHXlmkqcY2MDFi" 
               target="_blank" 
               rel="noopener noreferrer"
               className="group"
             >
               <Button 
                 size="lg" 
-                className="text-2xl md:text-4xl px-12 md:px-16 py-8 md:py-12 font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 bg-gradient-to-r from-primary via-accent to-primary bg-size-200 animate-gradient"
+                className="text-2xl md:text-4xl px-12 md:px-16 py-8 md:py-12 font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 bg-gradient-to-r from-red-600 via-green-600 to-red-600 bg-size-200 animate-gradient"
               >
-                💬 Написать нам в WhatsApp
+                🎄 Хочу новогоднее чудо! ✨
               </Button>
             </a>
           </div>
