@@ -18,7 +18,7 @@ const HeroSection = ({ scrollToSection }: HeroSectionProps) => {
             >
               <Button 
                 size="lg" 
-                className="text-2xl md:text-4xl px-12 md:px-16 py-8 md:py-12 font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 bg-gradient-to-r from-red-600 via-green-600 to-red-600 bg-size-200 animate-gradient"
+                className="text-2xl md:text-4xl px-12 md:px-16 py-8 md:py-12 font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 bg-gradient-to-br from-emerald-500 via-green-600 to-emerald-700"
               >
                 🎄 Хочу новогоднее чудо! ✨
               </Button>
