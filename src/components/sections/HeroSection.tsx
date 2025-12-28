@@ -11,7 +11,7 @@ const HeroSection = ({ scrollToSection }: HeroSectionProps) => {
         <div className="text-center space-y-8 animate-fade-in">
           <div className="flex justify-center mb-12">
             <a 
-              href="https://t.me/+r6XHXlmkqcY2MDFi" 
+              href="https://t.me/tuladogs" 
               target="_blank" 
               rel="noopener noreferrer"
               className="group"

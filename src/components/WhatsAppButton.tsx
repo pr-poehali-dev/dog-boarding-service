@@ -1,5 +1,5 @@
 const WhatsAppButton = () => {
-  const telegramUrl = 'https://t.me/+r6XHXlmkqcY2MDFi';
+  const telegramUrl = 'https://t.me/tuladogs';
 
   const handleClick = () => {
     window.open(telegramUrl, '_blank');
