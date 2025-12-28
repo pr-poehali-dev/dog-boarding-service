@@ -39,7 +39,7 @@ const BookingSection = () => {
     const days = Math.ceil((boardingDateRange.to.getTime() - boardingDateRange.from.getTime()) / (1000 * 60 * 60 * 24));
     const cost = days * 1800;
     
-    const whatsappNumber = '79107020758';
+    const telegramUrl = 'https://t.me/tuladogs';
     const message = `🐾 *Новое бронирование передержки!*
 
 👤 Клиент: ${boardingForm.name}
@@ -51,11 +51,10 @@ const BookingSection = () => {
 📆 Количество дней: ${days}
 💰 Стоимость: ${cost.toLocaleString('ru-RU')}₽`;
     
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    window.open(telegramUrl, '_blank');
     
     toast({
-      title: '✅ Открываем WhatsApp!',
+      title: '✅ Открываем Telegram!',
       description: 'Отправьте сообщение для подтверждения бронирования.',
     });
     
@@ -66,7 +65,7 @@ const BookingSection = () => {
   const handleTrainingSubmit = () => {
     if (!selectedDate) return;
     
-    const whatsappNumber = '79107020758';
+    const telegramUrl = 'https://t.me/tuladogs';
     const message = `🐾 *Запись в дневную группу!*
 
 👤 Клиент: ${trainingForm.name}
@@ -78,11 +77,10 @@ const BookingSection = () => {
 ⏰ Время: ${trainingForm.time}
 💰 Стоимость: 800₽`;
     
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    window.open(telegramUrl, '_blank');
     
     toast({
-      title: '✅ Открываем WhatsApp!',
+      title: '✅ Открываем Telegram!',
       description: 'Отправьте сообщение для подтверждения записи.',
     });
     
@@ -93,7 +91,7 @@ const BookingSection = () => {
   const handleKinologistSubmit = () => {
     if (!selectedDate) return;
     
-    const whatsappNumber = '79107020758';
+    const telegramUrl = 'https://t.me/tuladogs';
     const message = `🐕 *Запись на услуги кинолога!*
 
 👤 Клиент: ${kinologistForm.name}
@@ -106,11 +104,10 @@ const BookingSection = () => {
 📝 Задача: ${kinologistForm.task}
 💰 Стоимость: от 3000₽`;
     
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    window.open(telegramUrl, '_blank');
     
     toast({
-      title: '✅ Открываем WhatsApp!',
+      title: '✅ Открываем Telegram!',
       description: 'Отправьте сообщение для подтверждения записи.',
     });
     
