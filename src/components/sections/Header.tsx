@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
+import { Phone } from 'lucide-react';
 
 interface HeaderProps {
   scrollToSection: (id: string) => void;
@@ -21,7 +22,13 @@ const Header = ({ scrollToSection }: HeaderProps) => {
           <button onClick={() => scrollToSection('reviews')} className="text-sm font-medium hover:text-primary transition-colors">Отзывы</button>
           <button onClick={() => scrollToSection('contacts')} className="text-sm font-medium hover:text-primary transition-colors">Контакты</button>
         </nav>
-        <Button onClick={() => scrollToSection('booking')}>Записаться</Button>
+        <div className="flex gap-3 items-center">
+          <Button onClick={() => window.open('tel:+79107020758', '_self')} size="lg" className="gap-2">
+            <Phone size={20} />
+            Позвонить
+          </Button>
+          <Button onClick={() => scrollToSection('booking')} variant="outline">Записаться</Button>
+        </div>
       </div>
     </header>
   );

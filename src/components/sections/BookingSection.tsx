@@ -222,7 +222,7 @@ const BookingSection = () => {
                       disabled={!boardingForm.petName || !boardingForm.phone || !boardingForm.name}
                       onClick={handleBookingSubmit}
                     >
-                      Отправить в WhatsApp
+                      Отправить менеджеру в телеграмм
                     </Button>
                   </div>
                 )}
@@ -329,7 +329,7 @@ const BookingSection = () => {
                       disabled={!trainingForm.petName || !trainingForm.name || !trainingForm.phone}
                       onClick={handleTrainingSubmit}
                     >
-                      Отправить в WhatsApp
+                      Отправить менеджеру в телеграмм
                     </Button>
                   </div>
                 )}
@@ -445,7 +445,7 @@ const BookingSection = () => {
                       disabled={!kinologistForm.petName || !kinologistForm.name || !kinologistForm.phone || !kinologistForm.task}
                       onClick={handleKinologistSubmit}
                     >
-                      Отправить в WhatsApp
+                      Отправить менеджеру в телеграмм
                     </Button>
                   </div>
                 )}
