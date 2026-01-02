@@ -3,19 +3,24 @@ import Icon from '@/components/ui/icon';
 const GallerySection = () => {
   const galleryImages = [
     {
-      url: 'https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/files/20b2d084-65a3-4d3c-8c73-43a30cbc087e.jpg',
-      title: 'Игровая комната',
-      description: 'Весёлые игры под присмотром'
+      url: 'https://cdn.poehali.dev/files/2025-10-23 21.38.22.jpg',
+      title: 'Уютные домики',
+      description: 'Комфортные места для отдыха'
     },
     {
-      url: 'https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/files/17b415db-b9f0-4cc4-8d03-7546dfb54f7a.jpg',
+      url: 'https://cdn.poehali.dev/files/photo_2026-01-02 15.59.23.jpeg',
       title: 'Дружная компания',
       description: 'Социализация и новые друзья'
     },
     {
-      url: 'https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/files/b8f8ad08-8109-438c-a3c5-0ace87e62993.jpg',
-      title: 'Уютные номера',
-      description: 'Комфортный отдых'
+      url: 'https://cdn.poehali.dev/files/photo_2026-01-02 16.00.05.jpeg',
+      title: 'Наши питомцы',
+      description: 'Счастливые и довольные'
+    },
+    {
+      url: 'https://cdn.poehali.dev/files/photo_2026-01-02 16.00.22.jpeg',
+      title: 'Праздничное настроение',
+      description: 'Весело проводим время'
     }
   ];
 
@@ -33,7 +38,7 @@ const GallerySection = () => {
           </p>
         </div>
         
-        <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
           {galleryImages.map((image, index) => (
             <div 
               key={index}
