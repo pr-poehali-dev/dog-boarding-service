@@ -50,11 +50,11 @@ const HeroSection = ({ scrollToSection }: HeroSectionProps) => {
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Icon name="Camera" className="text-primary" size={24} />
+                  <Icon name="Image" className="text-primary" size={24} />
                 </div>
                 <div>
-                  <p className="font-semibold">Видеонаблюдение</p>
-                  <p className="text-sm text-muted-foreground">Смотрите за питомцем</p>
+                  <p className="font-semibold">Фото и видео</p>
+                  <p className="text-sm text-muted-foreground">Отчёты каждый день</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -83,7 +83,7 @@ const HeroSection = ({ scrollToSection }: HeroSectionProps) => {
                 </div>
                 <div>
                   <p className="font-bold text-lg">4.9/5.0</p>
-                  <p className="text-sm text-muted-foreground">200+ отзывов</p>
+                  <p className="text-sm text-muted-foreground">Рейтинг</p>
                 </div>
               </div>
             </div>

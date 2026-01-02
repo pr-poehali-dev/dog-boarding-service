@@ -11,7 +11,7 @@ const ReviewsSection = () => {
     },
     {
       name: 'Дмитрий Волков',
-      text: 'Впервые оставляли собаку в гостинице и очень переживали. Но тут такая забота и профессионализм! Видеонаблюдение успокоило, видели что наша девочка играет и радуется. Рекомендую!',
+      text: 'Впервые оставляли собаку в гостинице и очень переживали. Но тут такая забота и профессионализм! Получали фото и видео, видели что наша девочка играет и радуется. Рекомендую!',
       rating: 5,
       pet: 'Белла, хаски'
     },
@@ -79,14 +79,9 @@ const ReviewsSection = () => {
 
         <div className="text-center mt-12 animate-fade-in" style={{ animationDelay: '450ms' }}>
           <div className="inline-flex items-center gap-3 px-6 py-4 bg-primary/10 rounded-2xl border border-primary/20">
-            <div className="flex items-center gap-2">
-              <Icon name="Star" className="text-primary fill-primary" size={28} />
-              <span className="text-3xl font-bold">4.9</span>
-            </div>
-            <div className="text-left">
-              <p className="font-semibold">Средняя оценка</p>
-              <p className="text-sm text-muted-foreground">Более 200 отзывов</p>
-            </div>
+            <Icon name="Star" className="text-primary fill-primary" size={32} />
+            <span className="text-3xl font-bold">4.9</span>
+            <span className="text-muted-foreground">Средняя оценка</span>
           </div>
         </div>
       </div>

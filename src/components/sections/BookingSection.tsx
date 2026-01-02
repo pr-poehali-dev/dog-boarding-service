@@ -195,9 +195,9 @@ const BookingSection = () => {
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <Icon name="Star" className="text-primary mt-1" size={24} />
+                    <Icon name="PartyPopper" className="text-primary mt-1" size={24} />
                     <div>
-                      <p className="font-semibold text-lg">Люкс</p>
+                      <p className="font-semibold text-lg">Праздники</p>
                       <p className="text-sm text-muted-foreground">1 800₽ / сутки</p>
                     </div>
                   </div>
