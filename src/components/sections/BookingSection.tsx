@@ -2,18 +2,21 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DateRange } from 'react-day-picker';
 import { useToast } from '@/hooks/use-toast';
+import Icon from '@/components/ui/icon';
 
 const BookingSection = () => {
   const { toast } = useToast();
-  const [selectedDate, setSelectedDate] = useState<Date>();
   const [boardingDateRange, setBoardingDateRange] = useState<DateRange | undefined>();
-  const [boardingForm, setBoardingForm] = useState({ petName: '', breed: '', age: '', phone: '', name: '' });
-  const [trainingForm, setTrainingForm] = useState({ petName: '', breed: '', age: '', name: '', phone: '', time: '08:00 - 09:00' });
-  const [kinologistForm, setKinologistForm] = useState({ petName: '', breed: '', age: '', name: '', phone: '', task: '', time: '08:00 - 09:00' });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [boardingForm, setBoardingForm] = useState({ 
+    petName: '', 
+    breed: '', 
+    age: '', 
+    phone: '', 
+    name: '',
+    roomType: 'standard'
+  });
 
   const formatPhoneNumber = (value: string) => {
     const cleaned = value.replace(/\D/g, '');
@@ -37,422 +40,231 @@ const BookingSection = () => {
     if (!boardingDateRange?.from || !boardingDateRange?.to) return;
     
     const days = Math.ceil((boardingDateRange.to.getTime() - boardingDateRange.from.getTime()) / (1000 * 60 * 60 * 24));
-    const cost = days * 1800;
+    const pricePerDay = boardingForm.roomType === 'standard' ? 1200 : 1800;
+    const cost = days * pricePerDay;
     
     const telegramUrl = 'https://t.me/tuladogs';
-    const message = `🐾 *Новое бронирование передержки!*
-
-👤 Клиент: ${boardingForm.name}
-📞 Телефон: ${boardingForm.phone}
-🐶 Питомец: ${boardingForm.petName}
-🐕 Порода: ${boardingForm.breed}
-🎂 Возраст: ${boardingForm.age}
-📅 Даты: ${boardingDateRange.from.toLocaleDateString('ru-RU')} - ${boardingDateRange.to.toLocaleDateString('ru-RU')}
-📆 Количество дней: ${days}
-💰 Стоимость: ${cost.toLocaleString('ru-RU')}₽`;
     
     window.open(telegramUrl, '_blank');
     
     toast({
       title: '✅ Открываем Telegram!',
-      description: 'Отправьте сообщение для подтверждения бронирования.',
+      description: 'Отправьте нам данные для бронирования.',
     });
     
-    setBoardingForm({ petName: '', breed: '', age: '', phone: '', name: '' });
+    setBoardingForm({ petName: '', breed: '', age: '', phone: '', name: '', roomType: 'standard' });
     setBoardingDateRange(undefined);
   };
 
-  const handleTrainingSubmit = () => {
-    if (!selectedDate) return;
-    
-    const telegramUrl = 'https://t.me/tuladogs';
-    const message = `🐾 *Запись в дневную группу!*
-
-👤 Клиент: ${trainingForm.name}
-📞 Телефон: ${trainingForm.phone}
-🐶 Питомец: ${trainingForm.petName}
-🐕 Порода: ${trainingForm.breed}
-🎂 Возраст: ${trainingForm.age}
-📅 Дата: ${selectedDate.toLocaleDateString('ru-RU')}
-⏰ Время: ${trainingForm.time}
-💰 Стоимость: 800₽`;
-    
-    window.open(telegramUrl, '_blank');
-    
-    toast({
-      title: '✅ Открываем Telegram!',
-      description: 'Отправьте сообщение для подтверждения записи.',
-    });
-    
-    setTrainingForm({ petName: '', breed: '', age: '', name: '', phone: '', time: '08:00 - 09:00' });
-    setSelectedDate(undefined);
+  const calculateCost = () => {
+    if (!boardingDateRange?.from || !boardingDateRange?.to) return 0;
+    const days = Math.ceil((boardingDateRange.to.getTime() - boardingDateRange.from.getTime()) / (1000 * 60 * 60 * 24));
+    const pricePerDay = boardingForm.roomType === 'standard' ? 1200 : 1800;
+    return days * pricePerDay;
   };
 
-  const handleKinologistSubmit = () => {
-    if (!selectedDate) return;
-    
-    const telegramUrl = 'https://t.me/tuladogs';
-    const message = `🐕 *Запись на услуги кинолога!*
-
-👤 Клиент: ${kinologistForm.name}
-📞 Телефон: ${kinologistForm.phone}
-🐶 Питомец: ${kinologistForm.petName}
-🐕 Порода: ${kinologistForm.breed}
-🎂 Возраст: ${kinologistForm.age}
-📅 Дата: ${selectedDate.toLocaleDateString('ru-RU')}
-⏰ Время: ${kinologistForm.time}
-📝 Задача: ${kinologistForm.task}
-💰 Стоимость: от 3000₽`;
-    
-    window.open(telegramUrl, '_blank');
-    
-    toast({
-      title: '✅ Открываем Telegram!',
-      description: 'Отправьте сообщение для подтверждения записи.',
-    });
-    
-    setKinologistForm({ petName: '', breed: '', age: '', name: '', phone: '', task: '', time: '08:00 - 09:00' });
-    setSelectedDate(undefined);
+  const calculateDays = () => {
+    if (!boardingDateRange?.from || !boardingDateRange?.to) return 0;
+    return Math.ceil((boardingDateRange.to.getTime() - boardingDateRange.from.getTime()) / (1000 * 60 * 60 * 24));
   };
 
   return (
-    <section id="booking" className="py-20 bg-background">
+    <section id="booking" className="py-24 bg-gradient-to-b from-accent/20 to-background">
       <div className="container">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Онлайн бронирование</h2>
-          <p className="text-lg text-muted-foreground">
-            Выберите удобную дату и время для вашего питомца
+        <div className="text-center mb-16 space-y-4 animate-fade-in">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full border border-primary/20 mb-4">
+            <Icon name="Calendar" className="text-primary" size={20} />
+            <span className="text-primary font-semibold">Бронирование</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold">Забронировать место</h2>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            Заполните форму, и мы свяжемся с вами для подтверждения
           </p>
         </div>
-        <Tabs defaultValue="boarding" className="max-w-4xl mx-auto">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="boarding">Передержка</TabsTrigger>
-            <TabsTrigger value="training">Дневная группа</TabsTrigger>
-            <TabsTrigger value="kinologist">Услуги кинолога</TabsTrigger>
-          </TabsList>
-          <TabsContent value="boarding" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Забронировать передержку</CardTitle>
-                <CardDescription>Выберите даты пребывания вашего питомца</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="flex justify-center">
-                  <Calendar
-                    mode="range"
-                    selected={boardingDateRange}
-                    onSelect={setBoardingDateRange}
-                    className="rounded-md border"
-                    disabled={(date) => date < new Date()}
-                    numberOfMonths={2}
-                  />
-                </div>
-                {boardingDateRange?.from && (
-                  <div className="p-4 bg-accent/50 rounded-lg space-y-4">
-                    <div className="space-y-2">
-                      <p className="font-medium">Дата заезда: {boardingDateRange.from.toLocaleDateString('ru-RU')}</p>
-                      {boardingDateRange.to && (
-                        <>
-                          <p className="font-medium">Дата выезда: {boardingDateRange.to.toLocaleDateString('ru-RU')}</p>
-                          <p className="text-sm text-muted-foreground">
-                            Количество дней: {Math.ceil((boardingDateRange.to.getTime() - boardingDateRange.from.getTime()) / (1000 * 60 * 60 * 24))}
-                          </p>
-                          <div className="mt-3 p-3 bg-primary/10 rounded-lg border-2 border-primary/30">
-                            <p className="text-lg font-bold text-primary">
-                              Стоимость: {(Math.ceil((boardingDateRange.to.getTime() - boardingDateRange.from.getTime()) / (1000 * 60 * 60 * 24)) * 1800).toLocaleString('ru-RU')}₽
-                            </p>
-                            <p className="text-xs text-muted-foreground mt-1">1800₽ за сутки</p>
-                          </div>
-                        </>
-                      )}
+
+        <Card className="max-w-4xl mx-auto shadow-2xl border-2 animate-fade-in" style={{ animationDelay: '200ms' }}>
+          <CardHeader className="text-center border-b bg-gradient-to-r from-primary/5 to-secondary/5">
+            <CardTitle className="text-2xl flex items-center justify-center gap-2">
+              <Icon name="Home" className="text-primary" size={28} />
+              Бронирование проживания
+            </CardTitle>
+            <CardDescription className="text-base">
+              Укажите данные вашего питомца и выберите даты пребывания
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="p-8 space-y-6">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-sm font-medium flex items-center gap-2">
+                  <Icon name="User" size={16} className="text-primary" />
+                  Ваше имя
+                </label>
+                <input 
+                  type="text" 
+                  className="w-full px-4 py-3 rounded-lg border-2 bg-background focus:border-primary transition-colors" 
+                  placeholder="Как к вам обращаться?" 
+                  value={boardingForm.name}
+                  onChange={(e) => setBoardingForm({...boardingForm, name: e.target.value})}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium flex items-center gap-2">
+                  <Icon name="Phone" size={16} className="text-primary" />
+                  Ваш телефон
+                </label>
+                <input 
+                  type="tel" 
+                  className="w-full px-4 py-3 rounded-lg border-2 bg-background focus:border-primary transition-colors" 
+                  placeholder="+7 (999) 123-45-67" 
+                  value={boardingForm.phone}
+                  onChange={(e) => setBoardingForm({...boardingForm, phone: formatPhoneNumber(e.target.value)})}
+                />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="space-y-2">
+                <label className="text-sm font-medium flex items-center gap-2">
+                  <Icon name="Dog" size={16} className="text-primary" />
+                  Имя питомца
+                </label>
+                <input 
+                  type="text" 
+                  className="w-full px-4 py-3 rounded-lg border-2 bg-background focus:border-primary transition-colors" 
+                  placeholder="Кличка" 
+                  value={boardingForm.petName}
+                  onChange={(e) => setBoardingForm({...boardingForm, petName: e.target.value})}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium flex items-center gap-2">
+                  <Icon name="PawPrint" size={16} className="text-primary" />
+                  Порода
+                </label>
+                <input 
+                  type="text" 
+                  className="w-full px-4 py-3 rounded-lg border-2 bg-background focus:border-primary transition-colors" 
+                  placeholder="Порода собаки" 
+                  value={boardingForm.breed}
+                  onChange={(e) => setBoardingForm({...boardingForm, breed: e.target.value})}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium flex items-center gap-2">
+                  <Icon name="Cake" size={16} className="text-primary" />
+                  Возраст
+                </label>
+                <input 
+                  type="text" 
+                  className="w-full px-4 py-3 rounded-lg border-2 bg-background focus:border-primary transition-colors" 
+                  placeholder="Например, 2 года" 
+                  value={boardingForm.age}
+                  onChange={(e) => setBoardingForm({...boardingForm, age: e.target.value})}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <label className="text-sm font-medium flex items-center gap-2">
+                <Icon name="Star" size={16} className="text-primary" />
+                Тип номера
+              </label>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div 
+                  onClick={() => setBoardingForm({...boardingForm, roomType: 'standard'})}
+                  className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                    boardingForm.roomType === 'standard' 
+                      ? 'border-primary bg-primary/5 shadow-lg' 
+                      : 'border-border hover:border-primary/50'
+                  }`}
+                >
+                  <div className="flex items-start gap-3">
+                    <Icon name="Home" className="text-primary mt-1" size={24} />
+                    <div>
+                      <p className="font-semibold text-lg">Стандарт</p>
+                      <p className="text-sm text-muted-foreground">1 200₽ / сутки</p>
                     </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Имя питомца</label>
-                      <input 
-                        type="text" 
-                        className="w-full px-4 py-2 rounded-md border bg-background" 
-                        placeholder="Например, Макс" 
-                        value={boardingForm.petName}
-                        onChange={(e) => setBoardingForm({...boardingForm, petName: e.target.value})}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Порода</label>
-                      <input 
-                        type="text" 
-                        className="w-full px-4 py-2 rounded-md border bg-background" 
-                        placeholder="Например, Английский бульдог" 
-                        value={boardingForm.breed}
-                        onChange={(e) => setBoardingForm({...boardingForm, breed: e.target.value})}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Возраст</label>
-                      <input 
-                        type="text" 
-                        className="w-full px-4 py-2 rounded-md border bg-background" 
-                        placeholder="Например, 3 года" 
-                        value={boardingForm.age}
-                        onChange={(e) => setBoardingForm({...boardingForm, age: e.target.value})}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Ваше имя</label>
-                      <input 
-                        type="text" 
-                        className="w-full px-4 py-2 rounded-md border bg-background" 
-                        placeholder="Как к вам обращаться?" 
-                        value={boardingForm.name}
-                        onChange={(e) => setBoardingForm({...boardingForm, name: e.target.value})}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Ваш телефон</label>
-                      <input 
-                        type="tel" 
-                        className="w-full px-4 py-2 rounded-md border bg-background" 
-                        placeholder="+7 (999) 123-45-67" 
-                        value={boardingForm.phone}
-                        onChange={(e) => setBoardingForm({...boardingForm, phone: formatPhoneNumber(e.target.value)})}
-                      />
-                    </div>
-                    <Button 
-                      className="w-full" 
-                      size="lg"
-                      disabled={!boardingForm.petName || !boardingForm.phone || !boardingForm.name}
-                      onClick={handleBookingSubmit}
-                    >
-                      Отправить менеджеру в телеграмм
-                    </Button>
                   </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-          <TabsContent value="training" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Записаться в дневную группу</CardTitle>
-                <CardDescription>Выберите удобную дату для занятия</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="flex justify-center">
-                  <Calendar
-                    mode="single"
-                    selected={selectedDate}
-                    onSelect={setSelectedDate}
-                    className="rounded-md border"
-                    disabled={(date) => date < new Date() || date.getDay() === 0}
-                  />
                 </div>
-                {selectedDate && (
-                  <div className="p-4 bg-accent/50 rounded-lg space-y-4">
-                    <p className="font-medium">Выбранная дата: {selectedDate.toLocaleDateString('ru-RU')}</p>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Время занятия</label>
-                      <select 
-                        className="w-full px-4 py-2 rounded-md border bg-background"
-                        value={trainingForm.time}
-                        onChange={(e) => setTrainingForm({...trainingForm, time: e.target.value})}
-                      >
-                        <option>08:00 - 09:00</option>
-                        <option>09:00 - 10:00</option>
-                        <option>10:00 - 11:00</option>
-                        <option>11:00 - 12:00</option>
-                        <option>12:00 - 13:00</option>
-                        <option>13:00 - 14:00</option>
-                        <option>14:00 - 15:00</option>
-                        <option>15:00 - 16:00</option>
-                        <option>16:00 - 17:00</option>
-                        <option>17:00 - 18:00</option>
-                        <option>18:00 - 19:00</option>
-                        <option>19:00 - 20:00</option>
-                      </select>
+                <div 
+                  onClick={() => setBoardingForm({...boardingForm, roomType: 'luxury'})}
+                  className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                    boardingForm.roomType === 'luxury' 
+                      ? 'border-primary bg-primary/5 shadow-lg' 
+                      : 'border-border hover:border-primary/50'
+                  }`}
+                >
+                  <div className="flex items-start gap-3">
+                    <Icon name="Star" className="text-primary mt-1" size={24} />
+                    <div>
+                      <p className="font-semibold text-lg">Люкс</p>
+                      <p className="text-sm text-muted-foreground">1 800₽ / сутки</p>
                     </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Имя питомца</label>
-                      <input 
-                        type="text" 
-                        className="w-full px-4 py-2 rounded-md border bg-background" 
-                        placeholder="Например, Макс" 
-                        value={trainingForm.petName}
-                        onChange={(e) => setTrainingForm({...trainingForm, petName: e.target.value})}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Порода</label>
-                      <input 
-                        type="text" 
-                        className="w-full px-4 py-2 rounded-md border bg-background" 
-                        placeholder="Например, Английский бульдог" 
-                        value={trainingForm.breed}
-                        onChange={(e) => setTrainingForm({...trainingForm, breed: e.target.value})}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Возраст</label>
-                      <input 
-                        type="text" 
-                        className="w-full px-4 py-2 rounded-md border bg-background" 
-                        placeholder="Например, 2 года" 
-                        value={trainingForm.age}
-                        onChange={(e) => setTrainingForm({...trainingForm, age: e.target.value})}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Ваше имя</label>
-                      <input 
-                        type="text" 
-                        className="w-full px-4 py-2 rounded-md border bg-background" 
-                        placeholder="Как к вам обращаться?" 
-                        value={trainingForm.name}
-                        onChange={(e) => setTrainingForm({...trainingForm, name: e.target.value})}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Ваш телефон</label>
-                      <input 
-                        type="tel" 
-                        className="w-full px-4 py-2 rounded-md border bg-background" 
-                        placeholder="+7 (999) 123-45-67" 
-                        value={trainingForm.phone}
-                        onChange={(e) => setTrainingForm({...trainingForm, phone: formatPhoneNumber(e.target.value)})}
-                      />
-                    </div>
-                    <div className="mt-3 p-3 bg-primary/10 rounded-lg border-2 border-primary/30">
-                      <p className="text-lg font-bold text-primary">Стоимость: 800₽</p>
-                      <p className="text-xs text-muted-foreground mt-1">за одно занятие</p>
-                    </div>
-                    <Button 
-                      className="w-full" 
-                      size="lg"
-                      disabled={!trainingForm.petName || !trainingForm.name || !trainingForm.phone}
-                      onClick={handleTrainingSubmit}
-                    >
-                      Отправить менеджеру в телеграмм
-                    </Button>
                   </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-          <TabsContent value="kinologist" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>🐕 Услуги кинолога</CardTitle>
-                <CardDescription>Индивидуальные занятия с профессиональным кинологом</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="flex justify-center">
-                  <Calendar
-                    mode="single"
-                    selected={selectedDate}
-                    onSelect={setSelectedDate}
-                    className="rounded-md border"
-                    disabled={(date) => date < new Date()}
-                  />
                 </div>
-                {selectedDate && (
-                  <div className="p-4 bg-accent/50 rounded-lg space-y-4">
-                    <p className="font-medium">Выбранная дата: {selectedDate.toLocaleDateString('ru-RU')}</p>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Время занятия</label>
-                      <select 
-                        className="w-full px-4 py-2 rounded-md border bg-background"
-                        value={kinologistForm.time}
-                        onChange={(e) => setKinologistForm({...kinologistForm, time: e.target.value})}
-                      >
-                        <option>08:00 - 09:00</option>
-                        <option>09:00 - 10:00</option>
-                        <option>10:00 - 11:00</option>
-                        <option>11:00 - 12:00</option>
-                        <option>12:00 - 13:00</option>
-                        <option>13:00 - 14:00</option>
-                        <option>14:00 - 15:00</option>
-                        <option>15:00 - 16:00</option>
-                        <option>16:00 - 17:00</option>
-                        <option>17:00 - 18:00</option>
-                        <option>18:00 - 19:00</option>
-                        <option>19:00 - 20:00</option>
-                      </select>
-                    </div>
-                    <div className="mt-3 p-3 bg-primary/10 rounded-lg border-2 border-primary/30">
-                      <p className="text-lg font-bold text-primary">Стоимость: от 3000₽</p>
-                      <p className="text-xs text-muted-foreground mt-1">за индивидуальное занятие</p>
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Имя питомца</label>
-                      <input 
-                        type="text" 
-                        className="w-full px-4 py-2 rounded-md border bg-background" 
-                        placeholder="Кличка вашего питомца" 
-                        value={kinologistForm.petName}
-                        onChange={(e) => setKinologistForm({...kinologistForm, petName: e.target.value})}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Порода</label>
-                      <input 
-                        type="text" 
-                        className="w-full px-4 py-2 rounded-md border bg-background" 
-                        placeholder="Например, Английский бульдог" 
-                        value={kinologistForm.breed}
-                        onChange={(e) => setKinologistForm({...kinologistForm, breed: e.target.value})}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Возраст</label>
-                      <input 
-                        type="text" 
-                        className="w-full px-4 py-2 rounded-md border bg-background" 
-                        placeholder="Например, 1 год" 
-                        value={kinologistForm.age}
-                        onChange={(e) => setKinologistForm({...kinologistForm, age: e.target.value})}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Ваше имя</label>
-                      <input 
-                        type="text" 
-                        className="w-full px-4 py-2 rounded-md border bg-background" 
-                        placeholder="Как к вам обращаться?" 
-                        value={kinologistForm.name}
-                        onChange={(e) => setKinologistForm({...kinologistForm, name: e.target.value})}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Ваш телефон</label>
-                      <input 
-                        type="tel" 
-                        className="w-full px-4 py-2 rounded-md border bg-background" 
-                        placeholder="+7 (999) 123-45-67" 
-                        value={kinologistForm.phone}
-                        onChange={(e) => setKinologistForm({...kinologistForm, phone: formatPhoneNumber(e.target.value)})}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Опишите задачу</label>
-                      <textarea 
-                        className="w-full px-4 py-2 rounded-md border bg-background min-h-[80px]" 
-                        placeholder="Что хотите улучшить в поведении питомца?" 
-                        value={kinologistForm.task}
-                        onChange={(e) => setKinologistForm({...kinologistForm, task: e.target.value})}
-                      />
-                    </div>
-                    <Button 
-                      className="w-full" 
-                      size="lg"
-                      disabled={!kinologistForm.petName || !kinologistForm.name || !kinologistForm.phone || !kinologistForm.task}
-                      onClick={handleKinologistSubmit}
-                    >
-                      Отправить менеджеру в телеграмм
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <label className="text-sm font-medium flex items-center gap-2">
+                <Icon name="CalendarDays" size={16} className="text-primary" />
+                Выберите даты проживания
+              </label>
+              <div className="flex justify-center p-4 bg-accent/30 rounded-xl">
+                <Calendar
+                  mode="range"
+                  selected={boardingDateRange}
+                  onSelect={setBoardingDateRange}
+                  className="rounded-md border-0"
+                  disabled={(date) => date < new Date()}
+                />
+              </div>
+            </div>
+
+            {boardingDateRange?.from && boardingDateRange?.to && (
+              <div className="p-6 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl border-2 border-primary/30 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">Период:</span>
+                  <span className="font-semibold">
+                    {boardingDateRange.from.toLocaleDateString('ru-RU')} - {boardingDateRange.to.toLocaleDateString('ru-RU')}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">Количество дней:</span>
+                  <span className="font-semibold">{calculateDays()}</span>
+                </div>
+                <div className="flex items-center justify-between pt-3 border-t border-primary/20">
+                  <span className="text-lg font-semibold">Итого:</span>
+                  <span className="text-2xl font-bold text-primary">{calculateCost().toLocaleString('ru-RU')}₽</span>
+                </div>
+              </div>
+            )}
+
+            <Button 
+              className="w-full h-14 text-lg gap-2" 
+              size="lg"
+              disabled={!boardingForm.petName || !boardingForm.phone || !boardingForm.name || !boardingDateRange?.from || !boardingDateRange?.to}
+              onClick={handleBookingSubmit}
+            >
+              <Icon name="Send" size={20} />
+              Отправить менеджеру в телеграмм
+            </Button>
+          </CardContent>
+        </Card>
+
+        <div className="text-center mt-12 space-y-4 animate-fade-in" style={{ animationDelay: '400ms' }}>
+          <p className="text-muted-foreground">Или свяжитесь с нами напрямую:</p>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Button variant="outline" size="lg" className="gap-2" onClick={() => window.open('tel:+79107020758', '_self')}>
+              <Icon name="Phone" size={20} />
+              +7 (910) 702-07-58
+            </Button>
+            <Button variant="outline" size="lg" className="gap-2" onClick={() => window.open('https://t.me/tuladogs', '_blank')}>
+              <Icon name="Send" size={20} />
+              Написать в Telegram
+            </Button>
+          </div>
+        </div>
       </div>
     </section>
   );

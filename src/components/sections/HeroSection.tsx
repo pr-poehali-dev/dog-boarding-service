@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import Icon from '@/components/ui/icon';
 
 interface HeroSectionProps {
   scrollToSection: (id: string) => void;
@@ -6,44 +7,86 @@ interface HeroSectionProps {
 
 const HeroSection = ({ scrollToSection }: HeroSectionProps) => {
   return (
-    <section id="hero" className="relative py-16 md:py-24 overflow-hidden bg-gradient-to-b from-accent/30 to-background">
-      <div className="container">
-        <div className="text-center space-y-8 animate-fade-in">
-          <div className="flex justify-center mb-12">
-            <a 
-              href="https://t.me/tuladogs" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="group"
-            >
-              <Button 
-                size="lg" 
-                className="text-2xl md:text-4xl px-12 md:px-16 py-8 md:py-12 font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 bg-gradient-to-br from-emerald-500 via-green-600 to-emerald-700"
-              >
-                🎄 Хочу новогоднее чудо! ✨
+    <section id="hero" className="relative pt-20 pb-32 px-4 overflow-hidden bg-gradient-to-br from-primary/10 via-secondary/20 to-accent/30">
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIGZpbGw9IiNhODU1ZjciIG9wYWNpdHk9Ii4xIi8+PC9nPjwvc3ZnPg==')] opacity-30"></div>
+      
+      <div className="container mx-auto relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="space-y-8 animate-fade-in">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full border border-primary/20">
+              <Icon name="Heart" className="text-primary" size={20} />
+              <span className="text-primary font-semibold">Отель с заботой о вашем питомце</span>
+            </div>
+            
+            <h1 className="text-5xl md:text-6xl font-bold leading-tight">
+              У Нас Лапки
+              <span className="block text-primary mt-2">Где каждой лапке рады! 🐾</span>
+            </h1>
+            
+            <p className="text-xl text-muted-foreground leading-relaxed">
+              Комфортное проживание для вашего питомца. Круглосуточная забота, уют и профессиональный уход, пока вы в отъезде.
+            </p>
+            
+            <div className="flex flex-wrap gap-4">
+              <Button size="lg" onClick={() => scrollToSection('booking')} className="gap-2 text-lg px-8">
+                <Icon name="Calendar" size={20} />
+                Забронировать
               </Button>
-            </a>
+              <Button size="lg" variant="outline" onClick={() => scrollToSection('services')} className="gap-2 text-lg px-8">
+                <Icon name="Info" size={20} />
+                Узнать больше
+              </Button>
+            </div>
+            
+            <div className="flex flex-wrap gap-6 pt-4">
+              <div className="flex items-center gap-2">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Icon name="Clock" className="text-primary" size={24} />
+                </div>
+                <div>
+                  <p className="font-semibold">24/7</p>
+                  <p className="text-sm text-muted-foreground">Круглосуточно</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Icon name="Camera" className="text-primary" size={24} />
+                </div>
+                <div>
+                  <p className="font-semibold">Видеонаблюдение</p>
+                  <p className="text-sm text-muted-foreground">Смотрите за питомцем</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Icon name="Users" className="text-primary" size={24} />
+                </div>
+                <div>
+                  <p className="font-semibold">Опытные</p>
+                  <p className="text-sm text-muted-foreground">Кинологи</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="flex justify-center mb-8">
-            <img
-              src="https://cdn.poehali.dev/files/7d114a4f-545b-4114-a2ba-28bc4d7d2770.png"
-              alt="У Нас Лапки - Кинологический клуб"
-              className="w-full max-w-2xl md:max-w-3xl animate-warm-bounce-in"
+          
+          <div className="relative animate-warm-bounce-in">
+            <div className="absolute -inset-4 bg-gradient-to-r from-primary via-secondary to-primary rounded-3xl blur-2xl opacity-20 animate-gradient bg-size-200"></div>
+            <img 
+              src="https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/files/b8f8ad08-8109-438c-a3c5-0ace87e62993.jpg"
+              alt="Счастливая собака в отеле"
+              className="relative rounded-3xl shadow-2xl w-full object-cover aspect-square"
             />
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold leading-tight max-w-4xl mx-auto">
-            Профессиональная забота о вашем питомце
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-            Кинологические услуги с любовью к бульдогам. Передержка, групповые занятия и индивидуальные тренировки.
-          </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Button size="lg" onClick={() => scrollToSection('booking')}>
-              Забронировать место
-            </Button>
-            <Button size="lg" variant="outline" onClick={() => scrollToSection('services')}>
-              Наши услуги
-            </Button>
+            <div className="absolute -bottom-6 -right-6 bg-white rounded-2xl shadow-xl p-4 animate-scale-in" style={{ animationDelay: '600ms' }}>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Icon name="Star" className="text-primary fill-primary" size={24} />
+                </div>
+                <div>
+                  <p className="font-bold text-lg">4.9/5.0</p>
+                  <p className="text-sm text-muted-foreground">200+ отзывов</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

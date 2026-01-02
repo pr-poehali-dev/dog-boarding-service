@@ -43,9 +43,27 @@ const Index = () => {
       
       <WhatsAppButton />
       
-      <footer className="py-8 bg-muted/50 border-t">
-        <div className="container text-center text-muted-foreground">
-          <p>&copy; 2024 У Нас Лапки. Все права защищены.</p>
+      <footer className="py-12 bg-gradient-to-t from-primary/5 to-background border-t border-primary/10">
+        <div className="container">
+          <div className="flex flex-col items-center gap-4">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-4xl">🐾</span>
+              <span className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">У Нас Лапки</span>
+            </div>
+            <p className="text-muted-foreground text-center max-w-md">
+              Отель для собак с любовью и заботой о каждом питомце
+            </p>
+            <div className="flex gap-4 mt-4">
+              <a href="tel:+79107020758" className="text-muted-foreground hover:text-primary transition-colors">
+                +7 (910) 702-07-58
+              </a>
+              <span className="text-muted-foreground">•</span>
+              <a href="https://t.me/tuladogs" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                Telegram
+              </a>
+            </div>
+            <p className="text-sm text-muted-foreground mt-6">&copy; 2024 У Нас Лапки. Все права защищены.</p>
+          </div>
         </div>
       </footer>
     </div>

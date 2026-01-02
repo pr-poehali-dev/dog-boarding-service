@@ -1,339 +1,68 @@
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
-import { useToast } from '@/hooks/use-toast';
-
-const GALLERY_API = 'https://functions.poehali.dev/66ee5a7d-a386-43a8-861e-8c0a9d2fd130';
 
 const GallerySection = () => {
-  const { toast } = useToast();
-  const [gallery, setGallery] = useState<Array<{ id: number; url: string; name: string }>>([]);
-  const [showUploadDialog, setShowUploadDialog] = useState(false);
-  const [password, setPassword] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [photoName, setPhotoName] = useState('');
-  const [isUploading, setIsUploading] = useState(false);
-  const [showDeleteMode, setShowDeleteMode] = useState(false);
-  const [deletePassword, setDeletePassword] = useState('');
-  const [isDeleteAuthenticated, setIsDeleteAuthenticated] = useState(false);
-
-  const UPLOAD_PASSWORD = '130125765';
-
-  useEffect(() => {
-    loadGallery();
-  }, []);
-
-  const loadGallery = async () => {
-    try {
-      const response = await fetch(GALLERY_API);
-      const data = await response.json();
-      setGallery(data.photos || []);
-    } catch (error) {
-      console.error('Failed to load gallery:', error);
-      toast({
-        title: '❌ Ошибка загрузки',
-        description: 'Не удалось загрузить фотографии',
-        variant: 'destructive',
-      });
+  const galleryImages = [
+    {
+      url: 'https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/files/20b2d084-65a3-4d3c-8c73-43a30cbc087e.jpg',
+      title: 'Игровая комната',
+      description: 'Весёлые игры под присмотром'
+    },
+    {
+      url: 'https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/files/17b415db-b9f0-4cc4-8d03-7546dfb54f7a.jpg',
+      title: 'Дружная компания',
+      description: 'Социализация и новые друзья'
+    },
+    {
+      url: 'https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/files/b8f8ad08-8109-438c-a3c5-0ace87e62993.jpg',
+      title: 'Уютные номера',
+      description: 'Комфортный отдых'
     }
-  };
-
-  const handlePasswordSubmit = () => {
-    if (password === UPLOAD_PASSWORD) {
-      setIsAuthenticated(true);
-      toast({
-        title: '✅ Доступ разрешён',
-        description: 'Теперь вы можете загружать фотографии',
-      });
-    } else {
-      toast({
-        title: '❌ Неверный пароль',
-        description: 'Попробуйте ещё раз',
-        variant: 'destructive',
-      });
-    }
-  };
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setSelectedFiles(Array.from(e.target.files));
-    }
-  };
-
-  const handleUpload = async () => {
-    if (selectedFiles.length === 0) {
-      toast({
-        title: '❌ Ошибка',
-        description: 'Выберите хотя бы одно фото',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    setIsUploading(true);
-    let uploadedCount = 0;
-    let failedCount = 0;
-
-    for (const file of selectedFiles) {
-      try {
-        const dataUrl = await new Promise<string>((resolve) => {
-          const reader = new FileReader();
-          reader.onload = (e) => resolve(e.target?.result as string);
-          reader.readAsDataURL(file);
-        });
-
-        const fileName = photoName || file.name.replace(/\.[^/.]+$/, '');
-
-        const response = await fetch(GALLERY_API, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Password': password,
-          },
-          body: JSON.stringify({
-            name: selectedFiles.length > 1 ? `${fileName} ${uploadedCount + 1}` : fileName,
-            url: dataUrl
-          })
-        });
-
-        if (response.ok) {
-          uploadedCount++;
-        } else {
-          failedCount++;
-        }
-      } catch (error) {
-        failedCount++;
-      }
-    }
-
-    setIsUploading(false);
-
-    if (uploadedCount > 0) {
-      toast({
-        title: '✅ Фото загружены',
-        description: `Успешно загружено: ${uploadedCount} из ${selectedFiles.length}`,
-      });
-      await loadGallery();
-    }
-
-    if (failedCount > 0) {
-      toast({
-        title: '⚠️ Не все фото загружены',
-        description: `Не удалось загрузить: ${failedCount} фото`,
-        variant: 'destructive',
-      });
-    }
-
-    setSelectedFiles([]);
-    setPhotoName('');
-    setShowUploadDialog(false);
-    setIsAuthenticated(false);
-    setPassword('');
-  };
-
-  const handleDeleteModeToggle = () => {
-    if (isDeleteAuthenticated) {
-      setShowDeleteMode(!showDeleteMode);
-    } else {
-      const enteredPassword = prompt('Введите пароль для удаления:');
-      if (enteredPassword === UPLOAD_PASSWORD) {
-        setIsDeleteAuthenticated(true);
-        setShowDeleteMode(true);
-        toast({
-          title: '✅ Режим удаления активирован',
-          description: 'Нажмите на фото, чтобы удалить',
-        });
-      } else if (enteredPassword !== null) {
-        toast({
-          title: '❌ Неверный пароль',
-          description: 'Доступ запрещён',
-          variant: 'destructive',
-        });
-      }
-    }
-  };
-
-  const handleDeletePhoto = async (photoId: number, photoName: string) => {
-    if (!isDeleteAuthenticated) return;
-    
-    const confirmed = confirm(`Удалить фото "${photoName}"?`);
-    if (confirmed) {
-      try {
-        const enteredPassword = prompt('Введите пароль еще раз:');
-        if (enteredPassword !== UPLOAD_PASSWORD) {
-          toast({
-            title: '❌ Неверный пароль',
-            description: 'Операция отменена',
-            variant: 'destructive',
-          });
-          return;
-        }
-
-        const response = await fetch(`${GALLERY_API}?id=${photoId}`, {
-          method: 'DELETE',
-          headers: {
-            'X-Password': enteredPassword,
-          },
-        });
-
-        if (response.ok) {
-          toast({
-            title: '✅ Фото удалено',
-            description: 'Фотография успешно удалена из галереи',
-          });
-          await loadGallery();
-        } else {
-          const result = await response.json();
-          toast({
-            title: '❌ Ошибка',
-            description: result.error || 'Не удалось удалить фото',
-            variant: 'destructive',
-          });
-        }
-      } catch (error) {
-        toast({
-          title: '❌ Ошибка',
-          description: 'Не удалось удалить фото',
-          variant: 'destructive',
-        });
-      }
-    }
-  };
+  ];
 
   return (
-    <section id="gallery" className="py-20 bg-muted/30">
+    <section id="gallery" className="py-24 bg-gradient-to-b from-background to-accent/20">
       <div className="container">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Фото наших подопечных</h2>
-          <p className="text-lg text-muted-foreground">
-            Счастливые моменты с нашими любимцами
-          </p>
-          <div className="flex gap-4 justify-center mt-6">
-            <Button 
-              onClick={() => setShowUploadDialog(true)} 
-              variant="outline"
-            >
-              <Icon name="Upload" className="mr-2" size={18} />
-              Загрузить фото
-            </Button>
-            <Button 
-              onClick={handleDeleteModeToggle}
-              variant={showDeleteMode ? "destructive" : "outline"}
-            >
-              <Icon name="Trash2" className="mr-2" size={18} />
-              {showDeleteMode ? 'Выключить удаление' : 'Удалить фото'}
-            </Button>
+        <div className="text-center mb-16 space-y-4 animate-fade-in">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full border border-primary/20 mb-4">
+            <Icon name="Image" className="text-primary" size={20} />
+            <span className="text-primary font-semibold">Фотогалерея</span>
           </div>
+          <h2 className="text-4xl md:text-5xl font-bold">Наши подопечные</h2>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            Счастливые моменты из жизни нашего отеля
+          </p>
         </div>
-        <div className="grid md:grid-cols-3 gap-6">
-          {gallery.map((photo) => (
+        
+        <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          {galleryImages.map((image, index) => (
             <div 
-              key={photo.id} 
-              className={`group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all ${
-                showDeleteMode ? 'cursor-pointer ring-2 ring-destructive' : ''
-              }`}
-              onClick={() => showDeleteMode && handleDeletePhoto(photo.id, photo.name)}
+              key={index}
+              className="group relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in"
+              style={{ animationDelay: `${index * 150}ms` }}
             >
-              <img
-                src={photo.url}
-                alt={photo.name}
-                className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-300"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
-                <p className="text-white font-semibold text-xl">{photo.name}</p>
+              <div className="aspect-square overflow-hidden">
+                <img
+                  src={image.url}
+                  alt={image.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
               </div>
-              {showDeleteMode && (
-                <div className="absolute inset-0 bg-destructive/80 flex items-center justify-center">
-                  <div className="text-center text-white">
-                    <Icon name="Trash2" size={48} className="mx-auto mb-2" />
-                    <p className="font-bold">Нажмите, чтобы удалить</p>
-                  </div>
-                </div>
-              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                <h3 className="text-white font-bold text-2xl mb-2">{image.title}</h3>
+                <p className="text-white/90">{image.description}</p>
+              </div>
+              <div className="absolute top-4 right-4 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <Icon name="Heart" className="text-white fill-white" size={24} />
+              </div>
             </div>
           ))}
         </div>
-
-        {showUploadDialog && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowUploadDialog(false)}>
-            <div className="bg-background rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl" onClick={(e) => e.stopPropagation()}>
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold">Загрузить фото</h3>
-                <button onClick={() => {
-                  setShowUploadDialog(false);
-                  setIsAuthenticated(false);
-                  setPassword('');
-                  setSelectedFiles([]);
-                  setPhotoName('');
-                }}>
-                  <Icon name="X" size={24} />
-                </button>
-              </div>
-
-              {!isAuthenticated ? (
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Введите пароль</label>
-                    <input 
-                      type="password"
-                      className="w-full px-4 py-2 rounded-md border bg-background"
-                      placeholder="Пароль для загрузки"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      onKeyDown={(e) => e.key === 'Enter' && handlePasswordSubmit()}
-                    />
-                  </div>
-                  <Button onClick={handlePasswordSubmit} className="w-full">
-                    Подтвердить
-                  </Button>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">
-                      Название (необязательно для нескольких фото)
-                    </label>
-                    <input 
-                      type="text"
-                      className="w-full px-4 py-2 rounded-md border bg-background"
-                      placeholder="Например, Дружок на прогулке"
-                      value={photoName}
-                      onChange={(e) => setPhotoName(e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Выберите фото</label>
-                    <input 
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      className="w-full px-4 py-2 rounded-md border bg-background"
-                      onChange={handleFileSelect}
-                    />
-                  </div>
-                  {selectedFiles.length > 0 && (
-                    <div className="text-sm text-muted-foreground space-y-1">
-                      <p className="font-semibold">Выбрано файлов: {selectedFiles.length}</p>
-                      <div className="max-h-32 overflow-y-auto space-y-1">
-                        {selectedFiles.map((file, i) => (
-                          <div key={i} className="truncate">• {file.name}</div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  <Button 
-                    onClick={handleUpload} 
-                    className="w-full"
-                    disabled={selectedFiles.length === 0 || isUploading}
-                  >
-                    {isUploading ? 'Загрузка...' : `Загрузить (${selectedFiles.length})`}
-                  </Button>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
+        
+        <div className="text-center mt-12 animate-fade-in" style={{ animationDelay: '450ms' }}>
+          <p className="text-muted-foreground text-lg">
+            Каждый день мы делимся фотоотчётами с владельцами 📸
+          </p>
+        </div>
       </div>
     </section>
   );

@@ -1,3 +1,5 @@
+import Icon from '@/components/ui/icon';
+
 const WhatsAppButton = () => {
   const telegramUrl = 'https://t.me/tuladogs';
 
@@ -8,12 +10,11 @@ const WhatsAppButton = () => {
   return (
     <button
       onClick={handleClick}
-      className="fixed bottom-6 right-6 z-50 bg-gradient-to-br from-emerald-500 via-green-600 to-emerald-700 hover:from-emerald-600 hover:via-green-700 hover:to-emerald-800 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 px-6 py-4 group hover:scale-105"
-      aria-label="Хочу новогоднее чудо!"
+      className="fixed bottom-6 right-6 z-50 bg-gradient-to-br from-primary via-secondary to-primary hover:from-primary/90 hover:via-secondary/90 hover:to-primary/90 text-white rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center gap-3 px-6 py-4 group hover:scale-105 border-2 border-white/20"
+      aria-label="Написать в Telegram"
     >
-      <span className="text-2xl">🎄</span>
-      <span className="font-bold text-sm whitespace-nowrap">Хочу новогоднее чудо!</span>
-      <span className="text-2xl">✨</span>
+      <Icon name="Send" size={24} className="group-hover:rotate-12 transition-transform" />
+      <span className="font-bold text-base whitespace-nowrap">Написать нам</span>
     </button>
   );
 };
