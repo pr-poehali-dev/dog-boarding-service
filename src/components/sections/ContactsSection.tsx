@@ -120,10 +120,9 @@ const ContactsSection = () => {
         <div className="text-center bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10 rounded-3xl p-8 max-w-4xl mx-auto animate-fade-in" style={{ animationDelay: '600ms' }}>
           <Icon name="Clock" className="text-primary mx-auto mb-4" size={48} />
           <h3 className="text-2xl font-bold mb-3">Режим работы</h3>
-          <p className="text-lg text-muted-foreground mb-2">Круглосуточно, без выходных</p>
+          <p className="text-lg text-muted-foreground mb-2">Понедельник - Суббота: с 7:00 до 22:00</p>
           <p className="text-sm text-muted-foreground">
-            Приём гостей: ежедневно с 9:00 до 21:00<br />
-            Забота о питомцах: 24/7
+            Забота о питомцах: круглосуточно
           </p>
         </div>
       </div>

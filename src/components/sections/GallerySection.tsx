@@ -3,9 +3,9 @@ import Icon from '@/components/ui/icon';
 const GallerySection = () => {
   const galleryImages = [
     {
-      url: 'https://cdn.poehali.dev/files/2025-10-23 21.38.22.jpg',
-      title: 'Уютные домики',
-      description: 'Комфортные места для отдыха'
+      url: 'https://cdn.poehali.dev/files/0dbd5879-3f52-4919-8f68-aa7e27db6a7d_a57d95bb-8b8c-41c7-96f7-9e425b31ecc1.png',
+      title: 'Наш чемпион',
+      description: 'Победитель выставки'
     },
     {
       url: 'https://cdn.poehali.dev/files/photo_2026-01-02 15.59.23.jpeg',
