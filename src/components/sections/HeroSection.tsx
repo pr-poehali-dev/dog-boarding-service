@@ -36,6 +36,15 @@ const HeroSection = ({ scrollToSection }: HeroSectionProps) => {
                 <Icon name="Info" size={20} />
                 Узнать больше
               </Button>
+              <Button 
+                size="lg" 
+                variant="secondary" 
+                onClick={() => window.open('https://t.me/your_channel', '_blank')}
+                className="gap-2 text-lg px-8"
+              >
+                <Icon name="MessageCircle" size={20} />
+                Наш Telegram канал LIVE
+              </Button>
             </div>
             
             <div className="flex flex-wrap gap-6 pt-4">
@@ -72,7 +81,7 @@ const HeroSection = ({ scrollToSection }: HeroSectionProps) => {
           <div className="relative animate-warm-bounce-in">
             <div className="absolute -inset-4 bg-gradient-to-r from-primary via-secondary to-primary rounded-3xl blur-2xl opacity-20 animate-gradient bg-size-200"></div>
             <img 
-              src="https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/files/b8f8ad08-8109-438c-a3c5-0ace87e62993.jpg"
+              src="https://cdn.poehali.dev/files/Без фона лого 4.png"
               alt="Счастливая собака в отеле"
               className="relative rounded-3xl shadow-2xl w-full object-cover aspect-square"
             />
