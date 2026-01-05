@@ -43,13 +43,36 @@ const BookingSection = () => {
     const pricePerDay = boardingForm.roomType === 'standard' ? 1200 : 1800;
     const cost = days * pricePerDay;
     
-    const telegramUrl = 'https://t.me/tuladogs';
+    const formatDate = (date: Date) => {
+      return date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    };
+    
+    const roomTypeText = boardingForm.roomType === 'standard' ? 'Стандарт' : 'Люкс';
+    
+    const message = `🐾 Бронирование отеля для питомцев
+
+👤 Владелец: ${boardingForm.name}
+📱 Телефон: ${boardingForm.phone}
+
+🐕 Питомец: ${boardingForm.petName}
+🎯 Порода: ${boardingForm.breed}
+🎂 Возраст: ${boardingForm.age}
+
+📅 Заезд: ${formatDate(boardingDateRange.from)}
+📅 Выезд: ${formatDate(boardingDateRange.to)}
+⏱ Дней: ${days}
+
+🏠 Тип номера: ${roomTypeText}
+💰 Стоимость: ${cost.toLocaleString()}₽`;
+    
+    const encodedMessage = encodeURIComponent(message);
+    const telegramUrl = `https://t.me/tuladogs?text=${encodedMessage}`;
     
     window.open(telegramUrl, '_blank');
     
     toast({
       title: '✅ Открываем Telegram!',
-      description: 'Отправьте нам данные для бронирования.',
+      description: 'Данные бронирования уже заполнены в сообщении.',
     });
     
     setBoardingForm({ petName: '', breed: '', age: '', phone: '', name: '', roomType: 'standard' });
