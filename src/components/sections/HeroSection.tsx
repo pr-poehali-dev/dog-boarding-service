@@ -27,7 +27,7 @@ const HeroSection = ({ scrollToSection }: HeroSectionProps) => {
               Комфортное проживание для вашего питомца. Круглосуточная забота, уют и профессиональный уход, пока вы в отъезде.
             </p>
             
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-4">
               <Button size="lg" onClick={() => scrollToSection('booking')} className="gap-2 text-lg px-8">
                 <Icon name="Calendar" size={20} />
                 Забронировать
@@ -36,15 +36,17 @@ const HeroSection = ({ scrollToSection }: HeroSectionProps) => {
                 <Icon name="Info" size={20} />
                 Узнать больше
               </Button>
-              <Button 
-                size="lg" 
-                variant="secondary" 
-                onClick={() => window.open('https://t.me/your_channel', '_blank')}
-                className="gap-2 text-lg px-8"
-              >
-                <Icon name="MessageCircle" size={20} />
-                Наш Telegram канал LIVE
-              </Button>
+            </div>
+            
+            <div 
+              onClick={() => window.open('https://t.me/your_channel', '_blank')}
+              className="inline-flex items-center gap-3 px-5 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 rounded-full cursor-pointer transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 group"
+            >
+              <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                <Icon name="Radio" className="text-white" size={18} />
+              </div>
+              <span className="text-white font-semibold">Telegram канал LIVE 📹</span>
+              <Icon name="ArrowRight" className="text-white group-hover:translate-x-1 transition-transform" size={18} />
             </div>
             
             <div className="flex flex-wrap gap-6 pt-4">
