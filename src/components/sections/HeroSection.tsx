@@ -39,7 +39,7 @@ const HeroSection = ({ scrollToSection }: HeroSectionProps) => {
             </div>
             
             <div 
-              onClick={() => window.open('https://t.me/your_channel', '_blank')}
+              onClick={() => window.open('https://t.me/tula_dogs', '_blank')}
               className="inline-flex items-center gap-3 px-5 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 rounded-full cursor-pointer transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 group"
             >
               <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
