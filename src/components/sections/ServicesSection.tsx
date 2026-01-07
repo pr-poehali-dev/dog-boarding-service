@@ -8,7 +8,7 @@ const ServicesSection = () => {
       title: 'Проживание Стандарт',
       description: 'Теплое и просторное помещение с лежанками, друзьями и прогулками, скучно не будет!',
       icon: 'Home',
-      price: '1 200₽',
+      price: 'от 1 200₽',
       period: 'в сутки',
       features: []
     },
@@ -16,7 +16,7 @@ const ServicesSection = () => {
       title: 'Проживание праздники',
       description: 'Теплое и просторное помещение с лежанками, друзьями и прогулками, скучно не будет!',
       icon: 'PartyPopper',
-      price: '1 800₽',
+      price: 'от 1 800₽',
       period: 'в сутки',
       features: []
     },
@@ -24,7 +24,7 @@ const ServicesSection = () => {
       title: 'Дневное пребывание',
       description: 'Присмотр за питомцем от 4-х до 8-ми часов',
       icon: 'Sun',
-      price: '800₽',
+      price: 'от 800₽',
       period: 'за день',
       features: ['Прогулка', 'Кормление', 'Игры']
     },
@@ -32,7 +32,7 @@ const ServicesSection = () => {
       title: 'Абонемент 10 дней',
       description: 'Выгодное предложение при длительном пребывании',
       icon: 'Ticket',
-      price: '10 000₽',
+      price: 'от 10 000₽',
       period: 'экономия 2000₽',
       features: ['Стандарт номер', 'Все включено', 'Скидка 17%']
     },
@@ -40,7 +40,7 @@ const ServicesSection = () => {
       title: 'Абонемент 21 день',
       description: 'Максимальная выгода для долгих командировок',
       icon: 'TicketCheck',
-      price: '19 500₽',
+      price: 'от 19 500₽',
       period: 'экономия 5700₽',
       features: ['Стандарт номер', 'Все включено', 'Скидка 23%']
     },
