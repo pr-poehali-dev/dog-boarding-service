@@ -273,7 +273,14 @@ const BookingSection = () => {
                 className="mt-1 w-4 h-4 accent-primary cursor-pointer flex-shrink-0"
               />
               <label htmlFor="policy-agreement" className="text-sm text-muted-foreground cursor-pointer leading-relaxed">
-                Я даю согласие на обработку персональных данных и принимаю условия политики конфиденциальности
+                Я даю согласие на{' '}
+                <a href="https://disk.yandex.ru/i/pPhpnXuaeQ6OUw" target="_blank" rel="noopener noreferrer" className="text-primary underline hover:no-underline">
+                  обработку персональных данных
+                </a>
+                {' '}и принимаю условия{' '}
+                <a href="https://disk.yandex.ru/i/s67qF5GIe5VW9A" target="_blank" rel="noopener noreferrer" className="text-primary underline hover:no-underline">
+                  политики конфиденциальности
+                </a>
               </label>
             </div>
 
