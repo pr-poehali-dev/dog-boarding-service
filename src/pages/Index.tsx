@@ -15,7 +15,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative z-[1]">
       <div className="animate-fade-in">
         <Header scrollToSection={scrollToSection} />
       </div>
