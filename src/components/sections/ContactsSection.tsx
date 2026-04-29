@@ -117,6 +117,22 @@ const ContactsSection = () => {
           </div>
         </div>
 
+        <div className="bg-card border-2 border-border rounded-2xl p-8 max-w-6xl mx-auto mb-8 animate-fade-in hover:border-primary/50 transition-all hover:shadow-xl group" style={{ animationDelay: '500ms' }}>
+          <div className="flex items-start gap-4">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+              <Icon name="FileText" className="text-primary" size={28} />
+            </div>
+            <div>
+              <h3 className="font-bold text-xl mb-3">Реквизиты</h3>
+              <div className="space-y-1 text-muted-foreground">
+                <p className="font-medium text-foreground">ИП Свиридов Никита Николаевич</p>
+                <p>ОГРНИП: 323710000016304</p>
+                <p>ИНН: 713080042519</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="text-center bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10 rounded-3xl p-8 max-w-4xl mx-auto animate-fade-in" style={{ animationDelay: '600ms' }}>
           <Icon name="Clock" className="text-primary mx-auto mb-4" size={48} />
           <h3 className="text-2xl font-bold mb-3">Режим работы</h3>
