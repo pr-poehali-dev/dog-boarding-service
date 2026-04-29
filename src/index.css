@@ -114,8 +114,10 @@ body::after {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg transform='translate(30,30) rotate(45)' opacity='0.08' fill='%239b59b6'%3E%3Cellipse cx='0' cy='-14' rx='5' ry='6.5'/%3E%3Cellipse cx='-9' cy='-11' rx='4' ry='5'/%3E%3Cellipse cx='9' cy='-11' rx='4' ry='5'/%3E%3Cellipse cx='-14' cy='-3' rx='3.5' ry='4.5'/%3E%3Cellipse cx='14' cy='-3' rx='3.5' ry='4.5'/%3E%3Cpath d='M-11,2 Q-12,13 0,15 Q12,13 11,2 Q5,-4 0,-3 Q-5,-4 -11,2 Z'/%3E%3C/g%3E%3Cg transform='translate(110,110) rotate(45)' opacity='0.08' fill='%239b59b6'%3E%3Cellipse cx='0' cy='-14' rx='5' ry='6.5'/%3E%3Cellipse cx='-9' cy='-11' rx='4' ry='5'/%3E%3Cellipse cx='9' cy='-11' rx='4' ry='5'/%3E%3Cellipse cx='-14' cy='-3' rx='3.5' ry='4.5'/%3E%3Cellipse cx='14' cy='-3' rx='3.5' ry='4.5'/%3E%3Cpath d='M-11,2 Q-12,13 0,15 Q12,13 11,2 Q5,-4 0,-3 Q-5,-4 -11,2 Z'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: 160px 160px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg transform='translate(20,20) rotate(45)' opacity='0.09' fill='%239b59b6'%3E%3Cellipse cx='0' cy='-10' rx='3.5' ry='4.5'/%3E%3Cellipse cx='-6' cy='-8' rx='2.8' ry='3.5'/%3E%3Cellipse cx='6' cy='-8' rx='2.8' ry='3.5'/%3E%3Cellipse cx='-9' cy='-2' rx='2.5' ry='3'/%3E%3Cellipse cx='9' cy='-2' rx='2.5' ry='3'/%3E%3Cpath d='M-7,1 Q-8,9 0,11 Q8,9 7,1 Q3,-3 0,-2 Q-3,-3 -7,1 Z'/%3E%3C/g%3E%3Cg transform='translate(60,60) rotate(45)' opacity='0.09' fill='%239b59b6'%3E%3Cellipse cx='0' cy='-10' rx='3.5' ry='4.5'/%3E%3Cellipse cx='-6' cy='-8' rx='2.8' ry='3.5'/%3E%3Cellipse cx='6' cy='-8' rx='2.8' ry='3.5'/%3E%3Cellipse cx='-9' cy='-2' rx='2.5' ry='3'/%3E%3Cellipse cx='9' cy='-2' rx='2.5' ry='3'/%3E%3Cpath d='M-7,1 Q-8,9 0,11 Q8,9 7,1 Q3,-3 0,-2 Q-3,-3 -7,1 Z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 80px 80px;
+  transform: rotate(45deg) scale(1.5);
+  transform-origin: center center;
   pointer-events: none;
   z-index: 0;
 }
