@@ -82,11 +82,23 @@ const HeroSection = ({ scrollToSection }: HeroSectionProps) => {
           
           <div className="relative animate-warm-bounce-in">
             <div className="absolute -inset-4 bg-gradient-to-r from-primary via-secondary to-primary rounded-3xl blur-2xl opacity-20 animate-gradient bg-size-200"></div>
-            <img 
-              src="https://cdn.poehali.dev/files/Без фона лого 4.png"
-              alt="Счастливая собака в отеле"
-              className="relative rounded-3xl shadow-2xl w-full object-cover aspect-square"
-            />
+            <div className="relative rounded-3xl shadow-2xl w-full overflow-hidden aspect-square">
+              <img 
+                src="https://cdn.poehali.dev/projects/925ccb93-1026-44ff-ab91-699038cc0122/bucket/b80b86a2-8b99-4412-9312-7c8134d0a27c.jpeg"
+                alt="Счастливая собака в отеле"
+                className="w-full h-full object-cover"
+                style={{ filter: 'contrast(1.08) brightness(1.05) saturate(1.1)' }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent rounded-3xl" />
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
+                <p className="text-white font-bold text-xl md:text-2xl leading-tight drop-shadow-lg"
+                  style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 12px rgba(0,0,0,0.7)', letterSpacing: '0.01em' }}
+                >
+                  У Нас Лапки —<br />
+                  <span className="text-yellow-300">у Вас спокойствие!</span>
+                </p>
+              </div>
+            </div>
             <div className="absolute -bottom-6 -right-6 bg-white rounded-2xl shadow-xl p-4 animate-scale-in" style={{ animationDelay: '600ms' }}>
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
