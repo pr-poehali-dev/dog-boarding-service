@@ -17,6 +17,7 @@ const BookingSection = () => {
     name: '',
     roomType: 'standard'
   });
+  const [agreedToPolicy, setAgreedToPolicy] = useState(false);
 
   const formatPhoneNumber = (value: string) => {
     const cleaned = value.replace(/\D/g, '');
@@ -263,10 +264,23 @@ const BookingSection = () => {
               </div>
             )}
 
+            <div className="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="policy-agreement"
+                checked={agreedToPolicy}
+                onChange={(e) => setAgreedToPolicy(e.target.checked)}
+                className="mt-1 w-4 h-4 accent-primary cursor-pointer flex-shrink-0"
+              />
+              <label htmlFor="policy-agreement" className="text-sm text-muted-foreground cursor-pointer leading-relaxed">
+                Я даю согласие на обработку персональных данных и принимаю условия политики конфиденциальности
+              </label>
+            </div>
+
             <Button 
               className="w-full h-14 text-lg gap-2" 
               size="lg"
-              disabled={!boardingForm.petName || !boardingForm.phone || !boardingForm.name || !boardingDateRange?.from || !boardingDateRange?.to}
+              disabled={!boardingForm.petName || !boardingForm.phone || !boardingForm.name || !boardingDateRange?.from || !boardingDateRange?.to || !agreedToPolicy}
               onClick={handleBookingSubmit}
             >
               <Icon name="Send" size={20} />
